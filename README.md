@@ -1,7 +1,7 @@
 # CheXpert : A Large Chest X-Ray Dataset and Competition
-*A repository created for the MAP583 Deep Learning project*
+*A repository created for the CSE6250 Big Data for Healthcare project*
 
-Authors: Gaëtan Dissez & Guillaume Duboc
+Author: Kshitij Srivastava
 
 
 This competition launched by the Stanford ML group aims at finding a prediction model which could perform as well as radiologist to find different pathologies thanks to chest X-Ray. The Dataset available to train our model is composed of 223,414 chest radiographs of 65,240 patients.
