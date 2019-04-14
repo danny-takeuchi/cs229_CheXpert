@@ -315,7 +315,7 @@ class CheXpertTrainer():
             try:
                 outAUROC.append(roc_auc_score(datanpGT[:, i], datanpPRED[:, i]))
                 print(i)
-                print (sklearn.metrics.confusion_matrix(datanpGT[:, i], datanpPRED[:, i]):))
+                print (sklearn.metrics.confusion_matrix(datanpGT[:, i], datanpPRED[:, i])))
             except ValueError:
                 pass
         return outAUROC
