@@ -479,7 +479,7 @@ for i in range(nnClassCount):
 
     plt.title('ROC for: ' + class_names[i])
     plt.plot(fpr, tpr, label = 'U-ones: AUC = %0.2f' % roc_auc)
-    plt.plot(fpr2, tpr2, label = 'U-zeros: AUC = %0.2f' % roc_auc2)
+   # plt.plot(fpr2, tpr2, label = 'U-zeros: AUC = %0.2f' % roc_auc2)
     #plt.plot(fpr3, tpr3, label = 'AUC = %0.2f' % roc_auc3)
 
     plt.legend(loc = 'lower right')
@@ -494,7 +494,7 @@ fig_size[0] = 100
 fig_size[1] = 30
 plt.rcParams["figure.figsize"] = fig_size
 
-plt.savefig("ROC1345.png", dpi=80)
+plt.savefig("ROC1345.png", dpi=1000)
 plt.show()
 
 
