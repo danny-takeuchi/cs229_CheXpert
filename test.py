@@ -316,8 +316,8 @@ class CheXpertTrainer():
         for i in range(classCount):
             try:
                 outAUROC.append(roc_auc_score(datanpGT[:, i], datanpPRED[:, i]))
-                print(i)
-                print(classification_report(datanpGT[:, i], datanpPRED[:, i], target_names = i))
+                #print(i)
+                #print(classification_report(datanpGT[:, i], datanpPRED[:, i], target_names = i))
             except ValueError:
                 pass
         return outAUROC
@@ -474,9 +474,13 @@ outGT3, outPRED3 = CheXpertTrainer.test(model, dataLoaderTest, nnClassCount, "mo
 
 for i in range(nnClassCount):
     fpr, tpr, threshold = metrics.roc_curve(outGT1.cpu()[:,i], outPRED1.cpu()[:,i])
+    print(i)
+    print(classification_report(outGT1.cpu()[:,i], outPRED1.cpu()[:,i]))
     roc_auc = metrics.auc(fpr, tpr)
     f = plt.subplot(2, 7, i+1)
     fpr2, tpr2, threshold2 = metrics.roc_curve(outGT3.cpu()[:,i], outPRED3.cpu()[:,i])
+    print(i)
+    print(classification_report(outGT3.cpu()[:,i], outPRED3.cpu()[:,i]))
     roc_auc2 = metrics.auc(fpr2, tpr2)
     #fpr3, tpr3, threshold2 = metrics.roc_curve(outGT4.cpu()[:,i], outPRED4.cpu()[:,i])
     #roc_auc3 = metrics.auc(fpr3, tpr3)
