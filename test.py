@@ -494,7 +494,7 @@ fig_size[0] = 100
 fig_size[1] = 30
 plt.rcParams["figure.figsize"] = fig_size
 
-plt.savefig("ROC1345.png", dpi=1000)
+plt.savefig("ROC1345.png", dpi=80)
 plt.show()
 
 
