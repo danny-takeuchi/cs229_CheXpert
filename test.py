@@ -317,7 +317,7 @@ class CheXpertTrainer():
             try:
                 outAUROC.append(roc_auc_score(datanpGT[:, i], datanpPRED[:, i]))
                 print(i)
-                print (classification_report(datanpGT[:, i], datanpPRED[:, i], target_names = i))
+                print(classification_report(datanpGT[:, i], datanpPRED[:, i], target_names = i))
             except ValueError:
                 pass
         return outAUROC
