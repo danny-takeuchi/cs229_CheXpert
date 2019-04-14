@@ -39,6 +39,7 @@ from PIL import Image
 import torch.nn.functional as func
 
 from sklearn.metrics.ranking import roc_auc_score
+from sklearn.metrics import confusion_matrix
 import sklearn.metrics as metrics
 import random
 
@@ -315,7 +316,7 @@ class CheXpertTrainer():
             try:
                 outAUROC.append(roc_auc_score(datanpGT[:, i], datanpPRED[:, i]))
                 print(i)
-                print (sklearn.metrics.confusion_matrix(datanpGT[:, i], datanpPRED[:, i]))
+                print (confusion_matrix(datanpGT[:, i], datanpPRED[:, i]))
             except ValueError:
                 pass
         return outAUROC
