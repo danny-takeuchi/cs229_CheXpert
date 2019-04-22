@@ -71,7 +71,7 @@ timestampTime = time.strftime("%H%M%S")
 timestampDate = time.strftime("%d%m%Y")
 timestampLaunch = timestampDate + '-' + timestampTime
 
-batch, losst, losse = CheXpertTrainer.train(model, dataLoaderTrain, dataLoaderVal, nnClassCount, trMaxEpoch, timestampLaunch, checkpoint = None)
+batch, losst, losse = CheXpertTrainer.train(CheXpertTrainer, model, dataLoaderTrain, dataLoaderVal, nnClassCount, trMaxEpoch, timestampLaunch, checkpoint = None)
 print("Model trained")
 
 #print loss metrics
@@ -109,8 +109,8 @@ class_names = ['No Finding', 'Enlarged Cardiomediastinum', 'Cardiomegaly', 'Lung
                'Lung Lesion', 'Edema', 'Consolidation', 'Pneumonia', 'Atelectasis', 'Pneumothorax', 
                'Pleural Effusion', 'Pleural Other', 'Fracture', 'Support Devices']
 
-outGT1, outPRED1 = CheXpertTrainer.test(model, dataLoaderTest, nnClassCount, "model1.pth.tar", class_names)
-outGT3, outPRED3 = CheXpertTrainer.test(model, dataLoaderTest, nnClassCount, "model_zeros.pth.tar", class_names)
+outGT1, outPRED1 = CheXpertTrainer.test(CheXpertTrainer, model, dataLoaderTest, nnClassCount, "model1.pth.tar", class_names)
+outGT3, outPRED3 = CheXpertTrainer.test(CheXpertTrainer, model, dataLoaderTest, nnClassCount, "model_zeros.pth.tar", class_names)
 #outGT4, outPRED4 = CheXpertTrainer.test(model, dataLoaderTest, nnClassCount, "model4.pth.tar", class_names)
 
 for i in range(nnClassCount):
