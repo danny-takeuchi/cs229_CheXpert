@@ -5,7 +5,7 @@ import time
 import torch.backends.cudnn as cudnn
 import numpy as np
 from sklearn.metrics.ranking import roc_auc_score
-from main import dataLoaderTest, dataLoaderTrain, dataLoaderVal, trMaxEpoch, nnClassCount
+#from main import dataLoaderTest, dataLoaderTrain, dataLoaderVal, trMaxEpoch, nnClassCount
 
 use_gpu = torch.cuda.is_available()
 
@@ -35,7 +35,7 @@ class CheXpertTrainer():
             timestampDate = time.strftime("%d%m%Y")
             timestampSTART = timestampDate + '-' + timestampTime
             
-            batchs, losst, losse = CheXpertTrainer.epochTrain(self, model, dataLoaderTrain, optimizer, trMaxEpoch, nnClassCount, loss)
+            batchs, losst, losse = CheXpertTrainer.epochTrain(self, model, dataLoaderTrain, optimizer, trMaxEpoch, nnClassCount, loss, dataLoaderVal)
             lossVal = CheXpertTrainer.epochVal(self, model, dataLoaderVal, optimizer, trMaxEpoch, nnClassCount, loss)
 
 
@@ -53,7 +53,7 @@ class CheXpertTrainer():
         return batchs, losst, losse        
     #-------------------------------------------------------------------------------- 
        
-    def epochTrain(self, model, dataLoader, optimizer, epochMax, classCount, loss):
+    def epochTrain(self, model, dataLoader, optimizer, epochMax, classCount, loss, dataLoaderVal):
         
         batch = []
         losstrain = []
@@ -61,7 +61,7 @@ class CheXpertTrainer():
         
         model.train()
 
-        for batchID, (varInput, target) in enumerate(dataLoaderTrain):
+        for batchID, (varInput, target) in enumerate(dataLoader):
             
             varTarget = target.cuda(non_blocking = True)
             
@@ -85,7 +85,7 @@ class CheXpertTrainer():
 
                 batch.append(batchID)
                 
-                le = CheXpertTrainer.epochVal(self, model, dataLoaderVal, optimizer, trMaxEpoch, nnClassCount, loss).item()
+                le = CheXpertTrainer.epochVal(self, model, dataLoaderVal, optimizer, epochMax, classCount, loss).item()
                 losseval.append(le)
                 
                 print(batchID)
@@ -104,7 +104,7 @@ class CheXpertTrainer():
         lossValNorm = 0
 
         with torch.no_grad():
-            for i, (varInput, target) in enumerate(dataLoaderVal):
+            for i, (varInput, target) in enumerate(dataLoader):
                 
                 target = target.cuda(non_blocking = True)
                 varOutput = model(varInput)
