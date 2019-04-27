@@ -155,7 +155,7 @@ for i in range(nnClassCount):
 
 # Generate heatmap
 pathInputImage = 'view1_frontal.jpg'
-pathOutputImage = 'heatmap_view1_frontal.png ' + modelName
+pathOutputImage = 'heatmap_view1_frontal' + modelName + '.png'
 pathModel = onesModeltoTest
 
 h = HeatmapGenerator(pathModel, nnClassCount, imgtransCrop)
