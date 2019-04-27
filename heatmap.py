@@ -84,6 +84,7 @@ class HeatmapGenerator ():
         img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
         plt.title(label)
         plt.imshow(img)
+        plt.get_legend().remove()
         plt.plot()
         plt.axis('off')
         plt.savefig(pathOutputFile)
