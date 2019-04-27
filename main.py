@@ -32,12 +32,12 @@ nnClassCount = 14                   #dimension of the output
 
 # Training settings: batch size, maximum number of epochs
 # ["DenseNet121","Vgg16","Vgg19"]
-modelName = "Vgg16"
+modelName = "Vgg19"
 policy = "ones"
 trBatchSize = 64
 trMaxEpoch = 3
 action = "test" # train or test
-onesModeltoTest = "m-epoch1-Vgg16-ones-26042019-003746.pth.tar"
+onesModeltoTest = "m-epoch1-Vgg19-ones-26042019-025551.pth.tar"
 zerosModeltoTest = "m-epoch2-Vgg19-zeros-26042019-135938.pth.tar"
 
 # Parameters related to image transforms: size of the down-scaled image, cropped image
