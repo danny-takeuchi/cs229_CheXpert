@@ -37,8 +37,8 @@ policy = "ones"
 trBatchSize = 64
 trMaxEpoch = 3
 action = "test" # train or test
-onesModeltoTest = "m-epoch1-Vgg19-ones-26042019-025551.pth.tar"
-zerosModeltoTest = "m-epoch2-Vgg19-zeros-26042019-135938.pth.tar"
+onesModeltoTest = "m-epoch2-DenseNet121-ones-25042019-224025.pth.tar"
+zerosModeltoTest = "m-epoch1-DenseNet121-zeros-26042019-085501.pth.tar"
 
 # Parameters related to image transforms: size of the down-scaled image, cropped image
 imgtransResize = (320, 320)
@@ -123,32 +123,33 @@ outGT3, outPRED3 = CheXpertTrainer.test(CheXpertTrainer, model, dataLoaderTest, 
 for i in range(nnClassCount):
     fpr, tpr, threshold = metrics.roc_curve(outGT1.cpu()[:,i], outPRED1.cpu()[:,i])
     roc_auc = metrics.auc(fpr, tpr)
-    f = plt.subplot(2, 7, i+1)
+    #f = plt.subplot(2, 7, i+1)
     fpr2, tpr2, threshold2 = metrics.roc_curve(outGT3.cpu()[:,i], outPRED3.cpu()[:,i])
     roc_auc2 = metrics.auc(fpr2, tpr2)
     #fpr3, tpr3, threshold2 = metrics.roc_curve(outGT4.cpu()[:,i], outPRED4.cpu()[:,i])
     #roc_auc3 = metrics.auc(fpr3, tpr3)
 
 
-    plt.title('ROC for: ' + class_names[i])
+    plt.title('ROC for: '+ modelName + "-" + class_names[i])
     plt.plot(fpr, tpr, label = 'U-ones: AUC = %0.2f' % roc_auc)
     plt.plot(fpr2, tpr2, label = 'U-zeros: AUC = %0.2f' % roc_auc2)
     #plt.plot(fpr3, tpr3, label = 'AUC = %0.2f' % roc_auc3)
 
     plt.legend(loc = 'lower right')
-    plt.plot([0, 1], [0, 1],'r--')
-    plt.xlim([0, 1])
-    plt.ylim([0, 1])
+    #plt.plot([0, 1], [0, 1],'r--')
+    #plt.xlim([0, 1])
+    #plt.ylim([0, 1])
     plt.ylabel('True Positive Rate')
     plt.xlabel('False Positive Rate')
+    plt.savefig('ROC_'+modelName + "_" + class_names[i]+".png")
 
-fig_size = plt.rcParams["figure.figsize"]
-fig_size[0] = 30
-fig_size[1] = 10
-plt.rcParams["figure.figsize"] = fig_size
+#fig_size = plt.rcParams["figure.figsize"]
+#fig_size[0] = 30
+#fig_size[1] = 10
+#plt.rcParams["figure.figsize"] = fig_size
 
-plt.savefig("ROC1345.png", dpi=1000)
-plt.show()
+#plt.savefig("ROC1345.png", dpi=1000)
+#plt.show()
 
 # Generate heatmap
 pathInputImage = 'view1_frontal.jpg'
