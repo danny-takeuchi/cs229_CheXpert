@@ -131,8 +131,8 @@ for i in range(nnClassCount):
 
 
     plt.title('ROC for: '+ modelName + "-" + class_names[i])
-    print("ROC for: "+ modelName + "-" + class_names[i] + " ones- " + roc_auc)
-    print("ROC for: "+ modelName + "-" + class_names[i] + " zeros- " + roc_auc2)
+    print("ROC for: "+ modelName + "-" + class_names[i] + " ones- %0.2f" % roc_auc)
+    print("ROC for: "+ modelName + "-" + class_names[i] + " zeros- %0.2f" % roc_auc2)
     plt.plot(fpr, tpr, label = 'U-ones: AUC = %0.2f' % roc_auc)
     plt.plot(fpr2, tpr2, label = 'U-zeros: AUC = %0.2f' % roc_auc2)
     #plt.plot(fpr3, tpr3, label = 'AUC = %0.2f' % roc_auc3)
