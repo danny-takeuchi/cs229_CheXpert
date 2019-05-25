@@ -76,7 +76,8 @@ class LinearRegression(torch.nn.Module):
 
 # Paths to the files with training, and validation sets.
 # Each file contains pairs (path to image, output vector)
-pathFileTrain = 'CheXpert-v1.0-small/train.csv'
+pathFileTrain = 'train-small.csv'
+# pathFileTrain = 'CheXpert-v1.0-small/train.csv'
 pathFileValid = 'CheXpert-v1.0-small/valid.csv'
 
 # Neural network parameters:
@@ -108,7 +109,8 @@ transformList.append(normalize)
 transformSequence=transforms.Compose(transformList)
 
 #LOAD DATASET
-dataset = CheXpertViewDataSet("CheXpert-v1.0-small/train.csv", transformSequence)
+# dataset = CheXpertViewDataSet("CheXpert-v1.0-small/train.csv", transformSequence)
+dataset = CheXpertViewDataSet("train-small.csv", transformSequence)
 datasetTest, datasetTrain = random_split(dataset, [500, len(dataset) - 500])
 datasetValid = CheXpertViewDataSet(pathFileValid, transformSequence)
 
