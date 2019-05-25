@@ -123,7 +123,7 @@ model = LinearRegression()
 
 criterion = torch.nn.CrossEntropyLoss()
 optimizer = torch.optim.Adam(model.parameters(), lr = 0.01)
-num_iter = 1
+num_iter = 2
 for epoch in range(num_iter):
     for batchID, (varInput, target) in enumerate(dataLoaderTrain):
         #View Type: PA: 0. Lateral:1, AP: 2
@@ -140,8 +140,11 @@ for epoch in range(num_iter):
         optimizer.zero_grad()
         loss.backward()
         optimizer.step()
-        print(batchID)
+        if batchID % 20 == 0:
+            print(batchID)
     print('epoch {}, loss {}'.format(epoch, loss.item()))
+    torch.save(model.state_dict(), "checkpoints/view/" + "view_" + epoch)
+
 
 
 
