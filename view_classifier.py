@@ -121,33 +121,47 @@ dataLoaderTest = DataLoader(dataset=datasetTest, num_workers=24, pin_memory=True
 
 model = LinearRegression()
 
-criterion = torch.nn.CrossEntropyLoss()
-optimizer = torch.optim.Adam(model.parameters(), lr = 0.01)
-num_iter = 5
-print("Starting Training")
-for epoch in range(num_iter):
-    for batchID, (varInput, target) in enumerate(dataLoaderTrain):
-        if varInput.shape[0] != trBatchSize:
-            continue
-        #View Type: PA: 0. Lateral:1, AP: 2
-        # Forward pass: Compute predicted y by passing
-        # x to the model
-        varInput = varInput.reshape(64, -1)
-        pred_y = model(varInput)
+def train(model, dataLoaderTrain):
+    criterion = torch.nn.CrossEntropyLoss()
+    optimizer = torch.optim.Adam(model.parameters(), lr = 0.01)
+    num_iter = 12
+    print("Starting Training")
+    for epoch in range(num_iter):
+        for batchID, (varInput, target) in enumerate(dataLoaderTrain):
+            if varInput.shape[0] != trBatchSize:
+                continue
+            #View Type: PA: 0. Lateral:1, AP: 2
+            # Forward pass: Compute predicted y by passing
+            # x to the model
+            varInput = varInput.reshape(varInput.shape[0], -1)
+            pred_y = model(varInput)
 
-        # Compute and print loss
-        loss = criterion(pred_y, target)
+            # Compute and print loss
+            loss = criterion(pred_y, target)
 
-        # Zero gradients, perform a backward pass,
-        # and update the weights.
-        optimizer.zero_grad()
-        loss.backward()
-        optimizer.step()
-        if batchID % 20 == 0:
-            print(batchID)
-    print('epoch {}, loss {}'.format(epoch, loss.item()))
-    torch.save(model.state_dict(), "checkpoints/view/" + "view_epoch_" + str(epoch))
+            # Zero gradients, perform a backward pass,
+            # and update the weights.
+            optimizer.zero_grad()
+            loss.backward()
+            optimizer.step()
+            # if batchID % 20 == 0:
+            #     print(batchID)
+        print('epoch {}, loss {}'.format(epoch, loss.item()))
+        torch.save(model.state_dict(), "checkpoints/view/" + "view_epoch_" + str(epoch))
+
+def test(model, dataLoader, checkpoint):
+    modelCheckpoint = torch.load(checkpoint)
+    model.load_state_dict(modelCheckpoint)
+    count = 0
+    total = 0
+    for batchID, (varInput, target) in enumerate(dataLoader):
+        varInput = varInput.reshape(varInput.shape[0], -1)
+        pred_y = torch.argmax(model(varInput))
+        total+=1
+        if torch.eq(pred_y, target):
+            count+=1
+    print(count/ total)
 
 
-
-
+train(model, dataLoaderTrain)
+test(model, dataLoaderTest, "checkpoints/view/view_epoch_4")
