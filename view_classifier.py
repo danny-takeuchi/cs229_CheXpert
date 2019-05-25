@@ -128,7 +128,7 @@ model = LinearRegression()
 
 def train(model, dataLoaderTrain):
     criterion = torch.nn.CrossEntropyLoss()
-    optimizer = torch.optim.Adam(model.parameters(), lr = 0.01)
+    optimizer = torch.optim.Adam(model.parameters(), lr = 0.001)
     num_iter = 12
     print("Starting Training")
     for epoch in range(num_iter):
