@@ -23,8 +23,9 @@ from heatmap import HeatmapGenerator
 
 # Paths to the files with training, and validation sets.
 # Each file contains pairs (path to image, output vector)
-pathFileTrain = '../../../data/chexpert/CheXpert-v1.0-small/train.csv'
-pathFileValid = '../../../data/chexpert/CheXpert-v1.0-small/valid.csv'
+# pathFileTrain = '../CheXpert-v1.0-small/train.csv'
+pathFileTrain = '../train-small.csv'
+pathFileValid = '../CheXpert-v1.0-small/valid.csv'
 
 # Neural network parameters:
 nnIsTrained = False                 #pre-trained using ImageNet
@@ -154,9 +155,9 @@ for i in range(nnClassCount):
 #plt.show()
 
 # Generate heatmap
-pathInputImage = 'view1_frontal.jpg'
-pathOutputImage = 'heatmap_view1_frontal' + modelName + '.png'
-pathModel = onesModeltoTest
-
-h = HeatmapGenerator(pathModel, nnClassCount, imgtransCrop)
-h.generate(pathInputImage, pathOutputImage, imgtransCrop)
+# pathInputImage = 'view1_frontal.jpg'
+# pathOutputImage = 'heatmap_view1_frontal' + modelName + '.png'
+# pathModel = onesModeltoTest
+#
+# h = HeatmapGenerator(pathModel, nnClassCount, imgtransCrop)
+# h.generate(pathInputImage, pathOutputImage, imgtransCrop)
