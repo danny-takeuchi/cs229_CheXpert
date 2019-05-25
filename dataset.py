@@ -39,7 +39,7 @@ class CheXpertDataSet(Dataset):
                     else:
                         label[i] = 0
                         
-                image_names.append('../../../data/chexpert/' + image_name)
+                image_names.append(image_name)
                 labels.append(label)
 
         self.image_names = image_names
