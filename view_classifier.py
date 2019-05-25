@@ -44,7 +44,7 @@ class CheXpertViewDataSet(Dataset):
                     else:
                         label = 0
 
-                image_names.append(image_name)
+                image_names.append("../" + image_name)
                 labels.append(label)
 
         self.image_names = image_names
@@ -77,8 +77,9 @@ class LinearRegression(torch.nn.Module):
 # Paths to the files with training, and validation sets.
 # Each file contains pairs (path to image, output vector)
 pathFileTrain = 'train-small.csv'
+
 # pathFileTrain = 'CheXpert-v1.0-small/train.csv'
-pathFileValid = 'CheXpert-v1.0-small/valid.csv'
+pathFileValid = '../CheXpert-v1.0-small/valid.csv'
 
 # Neural network parameters:
 nnIsTrained = False                 #pre-trained using ImageNet
