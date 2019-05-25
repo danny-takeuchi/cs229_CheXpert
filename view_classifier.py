@@ -67,10 +67,15 @@ class CheXpertViewDataSet(Dataset):
 class LinearRegression(torch.nn.Module):
     def __init__(self):
         super(LinearRegression, self).__init__()
-        self.linear = torch.nn.Linear(150528, 3)
+        self.linear1 = torch.nn.Linear(150528, 150)
+        self.relu = torch.nn.ReLU()
+        self.linear2 = torch.nn.Linear(150, 30)
+        self.linear3 = torch.nn.Linear(30, 3)
         self.softmax = torch.nn.Softmax()
     def forward(self, x):
-        y_probs = self.linear(x)
+        x = self.relu(self.linear1(x))
+        x = self.relu(self.linear2(x))
+        y_probs = self.linear3(x)
         return y_probs
 
 
@@ -144,8 +149,8 @@ def train(model, dataLoaderTrain):
             optimizer.zero_grad()
             loss.backward()
             optimizer.step()
-            # if batchID % 20 == 0:
-            #     print(batchID)
+            if batchID % 30 == 0:
+                print(batchID)
         print('epoch {}, loss {}'.format(epoch, loss.item()))
         torch.save(model.state_dict(), "checkpoints/view/" + "view_epoch_" + str(epoch))
 
@@ -160,7 +165,7 @@ def test(model, dataLoader, checkpoint):
         total+=1
         if torch.eq(pred_y, target):
             count+=1
-    print(count/ total)
+    print(count * 1.0/ total)
 
 
 train(model, dataLoaderTrain)
