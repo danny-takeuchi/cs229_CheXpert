@@ -15,9 +15,9 @@ import sklearn.metrics as metrics
 import random
 
 from dataset import CheXpertDataSet
-from train_cnn import CheXpertTrainer
+from train_cnn_cp import CheXpertTrainer
 import models as mod
-from heatmap import HeatmapGenerator
+#from heatmap import HeatmapGenerator
 
 class CheXpertCnnClassifier(Dataset):
     def __init__(self, image_list_file, transform=None):
