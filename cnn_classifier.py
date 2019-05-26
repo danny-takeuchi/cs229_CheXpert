@@ -112,7 +112,7 @@ dataLoaderVal = DataLoader(dataset=datasetValid, batch_size=trBatchSize, shuffle
 dataLoaderTest = DataLoader(dataset=datasetTest, num_workers=24, pin_memory=True)
 
 model = mod.getmodel(modelName,nnClassCount)
-model = torch.nn.DataParallel(model).cuda()
+model = torch.nn.DataParallel(model)
 
 if action == "train":
     # train the model
