@@ -67,7 +67,8 @@ class CheXpertTrainer():
         for batchID, (varInput, target) in enumerate(dataLoader):
             
             varTarget = target.cuda(non_blocking = True)
-            
+             if varInput.shape[0] != trBatchSize:
+                continue
             #varTarget = target.cuda()         
 
 
