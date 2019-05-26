@@ -52,9 +52,12 @@ class Vgg19(nn.Module):
 
 def getmodel(modelname, nn):
     switcher = {
-        "DenseNet121":  DenseNet121(nn).cuda(),
-        "Vgg16": Vgg16(nn).cuda(),
-        "Vgg19": Vgg19(nn).cuda()
+        # "DenseNet121": DenseNet121(nn).cuda(),
+        # "Vgg16": Vgg16(nn).cuda(),
+        # "Vgg19": Vgg19(nn).cuda()
+        "DenseNet121": DenseNet121(nn),
+        "Vgg16": Vgg16(nn),
+        "Vgg19": Vgg19(nn)
     }
 
     model = switcher.get(modelname, lambda: "Invalid Model")
