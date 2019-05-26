@@ -37,9 +37,10 @@ modelName = "Vgg19"
 policy = "ones"
 trBatchSize = 64
 trMaxEpoch = 3
-action = "train" # train or test
-onesModeltoTest = "m-epoch1-Vgg19-ones-26042019-025551.pth.tar"
-zerosModeltoTest = "m-epoch2-Vgg19-zeros-26042019-135938.pth.tar"
+action = "test" # train or test
+onesModeltoTest = "model_ones_3epoch_densenet.tar"
+# onesModeltoTest = "m-epoch1-Vgg19-ones-26042019-025551.pth.tar"
+# zerosModeltoTest = "m-epoch2-Vgg19-zeros-26042019-135938.pth.tar"
 
 # Parameters related to image transforms: size of the down-scaled image, cropped image
 imgtransResize = (320, 320)
@@ -73,7 +74,7 @@ dataLoaderTest = DataLoader(dataset=datasetTest, num_workers=24, pin_memory=True
 model = mod.getmodel(modelName,nnClassCount)
 model = torch.nn.DataParallel(model)
 
-if action == "train":
+if action == "test":
     # train the model
     timestampTime = time.strftime("%H%M%S")
     timestampDate = time.strftime("%d%m%Y")
