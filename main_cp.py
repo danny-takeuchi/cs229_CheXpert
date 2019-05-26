@@ -17,7 +17,7 @@ import sklearn.metrics as metrics
 import random
 
 from dataset import CheXpertDataSet
-from train import CheXpertTrainer
+from train_cp import CheXpertTrainer
 import models as mod
 #from heatmap import HeatmapGenerator
 
