@@ -131,7 +131,7 @@ if action == "train":
     print(losse)
 
 
-outGT1, outPRED1 = CNNTrainer.test(CNNTrainer, model, dataLoaderTest, nnClassCount, testModel, class_names)
+outGT1, outPRED1 = CheXpertTrainer.test(CheXpertTrainer, model, dataLoaderTest, nnClassCount, testModel, class_names)
 #outGT3, outPRED3 = CNNTrainer.test(CNNTrainer, model, dataLoaderTest, nnClassCount, testModel, class_names)
 #outGT4, outPRED4 = CheXpertTrainer.test(model, dataLoaderTest, nnClassCount, "model4.pth.tar", class_names)
 
