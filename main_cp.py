@@ -24,8 +24,8 @@ import models as mod
 # Paths to the files with training, and validation sets.
 # Each file contains pairs (path to image, output vector)
 # pathFileTrain = '../CheXpert-v1.0-small/train.csv'
-pathFileTrain = '../train-small.csv'
-pathFileValid = '../CheXpert-v1.0-small/valid.csv'
+pathFileTrain = 'CheXpert-v1.0-small/train.csv'
+pathFileValid = 'CheXpert-v1.0-small/valid.csv'
 
 # Neural network parameters:
 nnIsTrained = False                 #pre-trained using ImageNet
