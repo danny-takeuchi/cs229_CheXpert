@@ -38,8 +38,9 @@ policy = "ones"
 trBatchSize = 64
 trMaxEpoch = 3
 action = "test" # train or test
-onesModeltoTest = "m-epoch1-Vgg19-ones-26042019-025551.pth.tar"
-zerosModeltoTest = "m-epoch2-Vgg19-zeros-26042019-135938.pth.tar"
+onesModeltoTest = "model_ones_3epoch_densenet.tar"
+# onesModeltoTest = "m-epoch1-Vgg19-ones-26042019-025551.pth.tar"
+# zerosModeltoTest = "m-epoch2-Vgg19-zeros-26042019-135938.pth.tar"
 
 # Parameters related to image transforms: size of the down-scaled image, cropped image
 imgtransResize = (320, 320)
