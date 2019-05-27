@@ -126,17 +126,17 @@ for i in range(nnClassCount):
     fpr, tpr, threshold = metrics.roc_curve(outGT1.cpu()[:,i], outPRED1.cpu()[:,i])
     roc_auc = metrics.auc(fpr, tpr)
     #f = plt.subplot(2, 7, i+1)
-    fpr2, tpr2, threshold2 = metrics.roc_curve(outGT3.cpu()[:,i], outPRED3.cpu()[:,i])
-    roc_auc2 = metrics.auc(fpr2, tpr2)
+    # fpr2, tpr2, threshold2 = metrics.roc_curve(outGT3.cpu()[:,i], outPRED3.cpu()[:,i])
+    # roc_auc2 = metrics.auc(fpr2, tpr2)
     #fpr3, tpr3, threshold2 = metrics.roc_curve(outGT4.cpu()[:,i], outPRED4.cpu()[:,i])
     #roc_auc3 = metrics.auc(fpr3, tpr3)
 
 
     plt.title('ROC for: '+ modelName + "-" + class_names[i])
     print("ROC for: "+ modelName + "-" + class_names[i] + " ones- %0.2f" % roc_auc)
-    print("ROC for: "+ modelName + "-" + class_names[i] + " zeros- %0.2f" % roc_auc2)
+    # print("ROC for: "+ modelName + "-" + class_names[i] + " zeros- %0.2f" % roc_auc2)
     plt.plot(fpr, tpr, label = 'U-ones: AUC = %0.2f' % roc_auc)
-    plt.plot(fpr2, tpr2, label = 'U-zeros: AUC = %0.2f' % roc_auc2)
+    # plt.plot(fpr2, tpr2, label = 'U-zeros: AUC = %0.2f' % roc_auc2)
     #plt.plot(fpr3, tpr3, label = 'AUC = %0.2f' % roc_auc3)
 
     plt.legend(loc = 'lower right')
