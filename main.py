@@ -37,7 +37,7 @@ modelName = "Vgg19"
 policy = "ones"
 trBatchSize = 64
 trMaxEpoch = 3
-action = "train" # train or test
+action = "test" # train or test
 onesModeltoTest = "model_ones_3epoch_densenet.tar"
 # onesModeltoTest = "m-epoch1-Vgg19-ones-26042019-025551.pth.tar"
 # zerosModeltoTest = "m-epoch2-Vgg19-zeros-26042019-135938.pth.tar"
@@ -119,7 +119,7 @@ class_names = ['No Finding', 'Enlarged Cardiomediastinum', 'Cardiomegaly', 'Lung
                'Pleural Effusion', 'Pleural Other', 'Fracture', 'Support Devices']
 
 outGT1, outPRED1 = CheXpertTrainer.test(CheXpertTrainer, model, dataLoaderTest, nnClassCount, onesModeltoTest, class_names)
-outGT3, outPRED3 = CheXpertTrainer.test(CheXpertTrainer, model, dataLoaderTest, nnClassCount, zerosModeltoTest, class_names)
+# outGT3, outPRED3 = CheXpertTrainer.test(CheXpertTrainer, model, dataLoaderTest, nnClassCount, zerosModeltoTest, class_names)
 #outGT4, outPRED4 = CheXpertTrainer.test(model, dataLoaderTest, nnClassCount, "model4.pth.tar", class_names)
 
 for i in range(nnClassCount):
