@@ -33,7 +33,7 @@ nnClassCount = 14                   #dimension of the output
 
 # Training settings: batch size, maximum number of epochs
 # ["DenseNet121","Vgg16","Vgg19"]
-modelName = "Vgg16"
+modelName = "Vgg19"
 policy = "ones"
 trBatchSize = 64
 trMaxEpoch = 3
@@ -98,19 +98,19 @@ if action == "train":
 #losse_epoch4=[0.3805544376373291, 0.3734971880912781, 0.36626899242401123, 0.35748544335365295, 0.36400526762008667, 0.3787081241607666, 0.3638656437397003, 0.3576703667640686, 0.38581162691116333, 0.3661232590675354, 0.3793403208255768, 0.36817827820777893, 0.37447163462638855, 0.3862340748310089, 0.36480140686035156, 0.3756641149520874, 0.37262284755706787, 0.3616373836994171, 0.3729729652404785, 0.37484994530677795, 0.36986684799194336, 0.3685488998889923, 0.3741607666015625, 0.36320504546165466, 0.36459749937057495, 0.36150071024894714, 0.3663293719291687, 0.3677067756652832, 0.36079493165016174, 0.3643547296524048, 0.37375548481941223, 0.38259708881378174, 0.3698703348636627, 0.36249879002571106, 0.3682171106338501, 0.37289685010910034, 0.3643338084220886, 0.3503931760787964, 0.35800397396087646, 0.37068215012550354, 0.3663598299026489, 0.36005282402038574, 0.3523160517215729, 0.3677838146686554, 0.380155086517334, 0.3665335476398468, 0.3614148199558258, 0.37214916944503784, 0.36093658208847046, 0.3762131929397583, 0.3783797025680542, 0.35905662178993225, 0.37995249032974243, 0.37668076157569885, 0.38223373889923096, 0.37231114506721497, 0.3603467345237732, 0.370810866355896, 0.3650743067264557, 0.36823880672454834, 0.3672899007797241, 0.36728230118751526, 0.3726865351200104, 0.3651810884475708, 0.3621949851512909, 0.3773549795150757, 0.37333834171295166, 0.3696346879005432, 0.3683282136917114, 0.35838863253593445, 0.3678383529186249, 0.36495712399482727, 0.3637832701206207, 0.37923842668533325, 0.3564605116844177, 0.36124280095100403, 0.3723773658275604, 0.37706851959228516, 0.37291762232780457, 0.3775297999382019, 0.36428314447402954, 0.3726186752319336, 0.37324127554893494, 0.3584378957748413, 0.379909873008728, 0.3619231879711151, 0.36706364154815674, 0.3745215833187103, 0.36760541796684265, 0.3831001818180084, 0.37397828698158264, 0.35005122423171997, 0.37429487705230713, 0.3595587909221649, 0.3598985970020294, 0.3776772916316986, 0.37782102823257446, 0.3772406578063965, 0.374235600233078, 0.35852670669555664]
 
 #plotting loss
-#lt = losstn_epoch1 + losstn_epoch3 + losstn_epoch4
-#le = losse_epoch1 + losse_epoch3 + losse_epoch4 
-#batch = [i*35 for i in range(len(lt))]
-
-#plt.plot(batch, lt, label = "train")
-#plt.plot(batch, le, label = "eval")
-#plt.xlabel("Nb of batches (size_batch = 64)")
-#plt.ylabel("BCE loss")
-#plt.title("BCE loss evolution")
-#plt.legend()
-
-#plt.savefig("chart5.png", dpi=1000)
-#plt.show()
+# lt = losstn_epoch1 + losstn_epoch3 + losstn_epoch4
+# le = losse_epoch1 + losse_epoch3 + losse_epoch4
+# batch = [i*35 for i in range(len(lt))]
+#
+# plt.plot(batch, lt, label = "train")
+# plt.plot(batch, le, label = "eval")
+# plt.xlabel("Nb of batches (size_batch = 64)")
+# plt.ylabel("BCE loss")
+# plt.title("BCE loss evolution")
+# plt.legend()
+#
+# plt.savefig("chart5.png", dpi=1000)
+# plt.show()
 
 # ## Test and ROC Curves
 
@@ -147,18 +147,18 @@ for i in range(nnClassCount):
     plt.xlabel('False Positive Rate')
     plt.savefig('ROC_'+modelName + "_" + class_names[i]+".png")
 
-#fig_size = plt.rcParams["figure.figsize"]
-#fig_size[0] = 30
-#fig_size[1] = 10
-#plt.rcParams["figure.figsize"] = fig_size
+fig_size = plt.rcParams["figure.figsize"]
+fig_size[0] = 30
+fig_size[1] = 10
+plt.rcParams["figure.figsize"] = fig_size
 
-#plt.savefig("ROC1345.png", dpi=1000)
-#plt.show()
+plt.savefig("ROC1345.png", dpi=1000)
+plt.show()
 
 # Generate heatmap
-# pathInputImage = 'view1_frontal.jpg'
-# pathOutputImage = 'heatmap_view1_frontal' + modelName + '.png'
-# pathModel = onesModeltoTest
-#
-# h = HeatmapGenerator(pathModel, nnClassCount, imgtransCrop)
-# h.generate(pathInputImage, pathOutputImage, imgtransCrop)
+pathInputImage = 'view1_frontal.jpg'
+pathOutputImage = 'heatmap_view1_frontal' + modelName + '.png'
+pathModel = onesModeltoTest
+
+h = HeatmapGenerator(pathModel, nnClassCount, imgtransCrop)
+h.generate(pathInputImage, pathOutputImage, imgtransCrop)
