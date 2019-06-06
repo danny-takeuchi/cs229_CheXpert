@@ -40,7 +40,7 @@ trMaxEpoch = 3
 action = "test" # train or test
 onesModeltoTest = "checkpoints/old/model_ones_3epoch_densenet.tar"
 # onesModeltoTest = "m-epoch1-Vgg19-ones-26042019-025551.pth.tar"
-# zerosModeltoTest = "m-epoch2-Vgg19-zeros-26042019-135938.pth.tar"
+# zerosModeltoTest = "m-epoch2-Vgg19-zeros-260019-135938.pth.tar"
 
 # Parameters related to image transforms: size of the down-scaled image, cropped image
 imgtransResize = (320, 320)
