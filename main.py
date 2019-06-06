@@ -33,7 +33,7 @@ nnClassCount = 14                   #dimension of the output
 
 # Training settings: batch size, maximum number of epochs
 # ["DenseNet121","Vgg16","Vgg19"]
-modelName = "Vgg19"
+modelName = "Vgg16"
 policy = "ones"
 trBatchSize = 64
 trMaxEpoch = 3
