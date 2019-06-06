@@ -141,7 +141,7 @@ class CheXpertTrainer():
             modelCheckpoint = torch.load(checkpoint)
             # model.load_state_dict(modelCheckpoint)
 
-            model.load_state_dict(modelCheckpoint['state_dict'])
+            model.load_state_dict(modelCheckpoint['state_dict'], strict=False)
 
 
         if use_gpu:
