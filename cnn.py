@@ -32,7 +32,7 @@ class DenseNet121(nn.Module):
     """
     def __init__(self, out_size):
         super(DenseNet121, self).__init__()
-        self.densenet121 = torchvision.models.densenet121(pretrained=True)
+        self.densenet121 = torchvision.models.densenet121(pretrained=True, progress=True)
         num_ftrs = self.densenet121.classifier.in_features
         self.densenet121.classifier = nn.Sequential(
             nn.Linear(num_ftrs, out_size),
@@ -42,8 +42,6 @@ class DenseNet121(nn.Module):
     def forward(self, x):
         x = self.densenet121(x)
         return x
-
-
 
 class CheXpertViewDataSet(Dataset):
     def __init__(self, image_list_file, transform=None):
@@ -103,7 +101,7 @@ imgtransCrop = 224
 # Create DataLoaders
 normalize = transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
 transformList = []
-#transformList.append(transforms.Resize(imgtransCrop))
+transformList.append(transforms.Resize(imgtransCrop))
 transformList.append(transforms.RandomResizedCrop(imgtransCrop))
 transformList.append(transforms.RandomHorizontalFlip())
 transformList.append(transforms.ToTensor())
@@ -120,7 +118,8 @@ trainloader = DataLoader(dataset=datasetTrain, batch_size=trBatchSize, shuffle=T
 dataLoaderVal = DataLoader(dataset=datasetValid, batch_size=trBatchSize, shuffle=False, num_workers=24, pin_memory=True)
 testloader = DataLoader(dataset=datasetTest, num_workers=24, pin_memory=True)
 
-net = DenseNet121(3)
+net = torch.nn.DataParallel(DenseNet121(3)).cuda()
+
 
 criterion = nn.CrossEntropyLoss()
 optimizer = optim.SGD(net.parameters(), lr=0.001, momentum=0.9)
@@ -138,9 +137,11 @@ for epoch in range(2):  # loop over the dataset multiple times
 
         # forward + backward + optimize
         outputs = net(inputs)
-        loss = criterion(outputs, labels)
+        loss = criterion(outputs, labels.cuda())
         loss.backward()
         optimizer.step()
+
+        print(i)
 
         # print statistics
         running_loss += loss.item()
