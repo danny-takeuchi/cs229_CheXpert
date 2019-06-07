@@ -22,6 +22,7 @@ from heatmap import HeatmapGenerator
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
+import torchvision
 
 
 class DenseNet121(nn.Module):
