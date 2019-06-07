@@ -92,7 +92,7 @@ pathFileTrain = 'train-small.csv'
 # pathFileTrain = 'CheXpert-v1.0-small/train.csv'
 pathFileValid = 'CheXpert-v1.0-small/valid.csv'
 
-trBatchSize = 64
+trBatchSize = 4
 
 # Parameters related to image transforms: size of the down-scaled image, cropped image
 imgtransResize = (320, 320)
