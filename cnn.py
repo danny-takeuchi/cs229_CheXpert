@@ -92,7 +92,7 @@ pathFileTrain = 'train-small.csv'
 # pathFileTrain = 'CheXpert-v1.0-small/train.csv'
 pathFileValid = 'CheXpert-v1.0-small/valid.csv'
 
-trBatchSize = 4
+trBatchSize = 64
 
 # Parameters related to image transforms: size of the down-scaled image, cropped image
 imgtransResize = (320, 320)
@@ -124,7 +124,7 @@ net = torch.nn.DataParallel(DenseNet121(3)).cuda()
 criterion = nn.CrossEntropyLoss()
 optimizer = optim.SGD(net.parameters(), lr=0.001, momentum=0.9)
 
-for epoch in range(2):  # loop over the dataset multiple times
+for epoch in range(1):  # loop over the dataset multiple times
 
     running_loss = 0.0
     for i, data in enumerate(trainloader, 0):
@@ -137,7 +137,8 @@ for epoch in range(2):  # loop over the dataset multiple times
 
         # forward + backward + optimize
         outputs = net(inputs)
-        loss = criterion(outputs, labels.cuda())
+        labels = labels.cuda()
+        loss = criterion(outputs)
         loss.backward()
         optimizer.step()
 
@@ -159,9 +160,10 @@ with torch.no_grad():
         images, labels = data
         outputs = net(images)
         _, predicted = torch.max(outputs.data, 1)
+        labels = labels.cuda()
         total += labels.size(0)
         correct += (predicted == labels).sum().item()
 
-print('Accuracy of the network on the 10000 test images: %d %%' % (
+print('Accuracy of the network on the test images: %d %%' % (
     100 * correct / total))
 
