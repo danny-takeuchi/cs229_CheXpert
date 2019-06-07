@@ -116,9 +116,9 @@ dataset = CheXpertViewDataSet("train-small.csv", transformSequence)
 datasetTest, datasetTrain = random_split(dataset, [500, len(dataset) - 500])
 datasetValid = CheXpertViewDataSet(pathFileValid, transformSequence)
 
-trainloader = DataLoader(dataset=datasetTrain, batch_size=trBatchSize, shuffle=True,  num_workers=2, pin_memory=True)
-dataLoaderVal = DataLoader(dataset=datasetValid, batch_size=trBatchSize, shuffle=False, num_workers=2, pin_memory=True)
-testloader = DataLoader(dataset=datasetTest, num_workers=2, pin_memory=True)
+trainloader = DataLoader(dataset=datasetTrain, batch_size=trBatchSize, shuffle=True,  num_workers=24, pin_memory=True)
+dataLoaderVal = DataLoader(dataset=datasetValid, batch_size=trBatchSize, shuffle=False, num_workers=24, pin_memory=True)
+testloader = DataLoader(dataset=datasetTest, num_workers=24, pin_memory=True)
 
 net = DenseNet121(3)
 
