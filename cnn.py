@@ -124,7 +124,7 @@ net = torch.nn.DataParallel(DenseNet121(3)).cuda()
 criterion = nn.CrossEntropyLoss()
 optimizer = optim.SGD(net.parameters(), lr=0.001, momentum=0.9)
 
-for epoch in range(5):  # loop over the dataset multiple times
+for epoch in range(13):  # loop over the dataset multiple times
 
     running_loss = 0.0
     for i, data in enumerate(trainloader, 0):
@@ -142,10 +142,9 @@ for epoch in range(5):  # loop over the dataset multiple times
         loss.backward()
         optimizer.step()
 
-        print(i)
-
         # print statistics
         running_loss += loss.item()
+        print(i, loss.item())
         if i % 2000 == 1999:    # print every 2000 mini-batches
             print('[%d, %5d] loss: %.3f' %
                   (epoch + 1, i + 1, running_loss / 2000))
