@@ -138,7 +138,7 @@ for epoch in range(1):  # loop over the dataset multiple times
         # forward + backward + optimize
         outputs = net(inputs)
         labels = labels.cuda()
-        loss = criterion(outputs)
+        loss = criterion(outputs, labels)
         loss.backward()
         optimizer.step()
 
