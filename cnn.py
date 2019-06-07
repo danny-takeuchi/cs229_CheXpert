@@ -69,7 +69,7 @@ class CheXpertViewDataSet(Dataset):
                     else:
                         label = 0
 
-                image_names.append("../" + image_name)
+                image_names.append("" + image_name)
                 labels.append(label)
 
         self.image_names = image_names
@@ -91,7 +91,7 @@ class CheXpertViewDataSet(Dataset):
 
 pathFileTrain = 'train-small.csv'
 # pathFileTrain = 'CheXpert-v1.0-small/train.csv'
-pathFileValid = '../CheXpert-v1.0-small/valid.csv'
+pathFileValid = 'CheXpert-v1.0-small/valid.csv'
 
 trBatchSize = 64
 
