@@ -42,6 +42,21 @@ class DenseNet121(nn.Module):
     def forward(self, x):
         x = self.densenet121(x)
         return x
+    
+class Vgg16(nn.Module):
+    def __init__(self, out_size):
+        super(Vgg16, self).__init__()
+        self.vgg16 = torchvision.models.vgg16(pretrained=True)
+        num_ftrs = self.vgg16.classifier[0].in_features
+        self.vgg16.classifier = nn.Sequential(
+            nn.Linear(num_ftrs, out_size),
+            nn.Sigmoid()
+        )
+
+    def forward(self, x):
+        x = self.vgg16(x)
+        return x
+
 
 class CheXpertViewDataSet(Dataset):
     def __init__(self, image_list_file, transform=None):
@@ -118,13 +133,13 @@ trainloader = DataLoader(dataset=datasetTrain, batch_size=trBatchSize, shuffle=T
 dataLoaderVal = DataLoader(dataset=datasetValid, batch_size=trBatchSize, shuffle=False, num_workers=24, pin_memory=True)
 testloader = DataLoader(dataset=datasetTest, num_workers=24, pin_memory=True)
 
-net = torch.nn.DataParallel(DenseNet121(3)).cuda()
+net = torch.nn.DataParallel(Vgg16(3)).cuda()
 
 
 criterion = nn.CrossEntropyLoss()
 optimizer = optim.SGD(net.parameters(), lr=0.001, momentum=0.9)
 
-for epoch in range(13):  # loop over the dataset multiple times
+for epoch in range(1):  # loop over the dataset multiple times
 
     running_loss = 0.0
     for i, data in enumerate(trainloader, 0):
