@@ -25,8 +25,8 @@ from heatmap import HeatmapGenerator
 # Each file contains pairs (path to image, output vector)
 # pathFileTrain = '../CheXpert-v1.0-small/train.csv'
 #pathFileTrain = 'CheXpert-v1.0-small/train.csv'
-pathFileTrainFrontalPa = 'train_frontal_pa.csv'
-#pathFileTrainFrontalAp = 'train_frontal_ap.csv'
+#pathFileTrainFrontalPa = 'train_frontal_pa.csv'
+pathFileTrainFrontalAp = 'train_frontal_ap.csv'
 pathFileValid = 'CheXpert-v1.0-small/valid.csv'
 
 # Neural network parameters:
