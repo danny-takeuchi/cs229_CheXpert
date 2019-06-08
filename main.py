@@ -68,6 +68,8 @@ transformSequence=transforms.Compose(transformList)
 dataset = CheXpertDataSet(pathFileTrainFrontalAp,transformSequence, policy=policy)
 
 datasetTest, datasetTrain = random_split(dataset, [500, len(dataset) - 500])
+datasetTest = torch.load("test.txt")
+
 datasetValid = CheXpertDataSet(pathFileValid, transformSequence)            
 
 dataLoaderTrain = DataLoader(dataset=datasetTrain, batch_size=trBatchSize, shuffle=True,  num_workers=24, pin_memory=True)
