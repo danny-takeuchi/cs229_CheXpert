@@ -25,6 +25,7 @@ from heatmap import HeatmapGenerator
 # Each file contains pairs (path to image, output vector)
 # pathFileTrain = '../CheXpert-v1.0-small/train.csv'
 pathFileTrain = 'CheXpert-v1.0-small/train.csv'
+pathFileTrainLateral = 'train_lateral.csv'
 pathFileValid = 'CheXpert-v1.0-small/valid.csv'
 
 # Neural network parameters:
@@ -34,7 +35,7 @@ nnClassCount = 14                   #dimension of the output
 # Training settings: batch size, maximum number of epochs
 # ["DenseNet121","Vgg16","Vgg19"]
 modelName = "Vgg19"
-policy = "zeros"
+policy = "ones"
 trBatchSize = 64
 trMaxEpoch = 3
 action = "test" # train or test
@@ -62,7 +63,9 @@ transformList.append(normalize)
 transformSequence=transforms.Compose(transformList)
 
 #LOAD DATASET
-dataset = CheXpertDataSet(pathFileTrain ,transformSequence, policy=policy)
+#dataset = CheXpertDataSet(pathFileTrain ,transformSequence, policy=policy)
+dataset = CheXpertDataSet(pathFileTrainLateral ,transformSequence, policy=policy)
+
 datasetTest, datasetTrain = random_split(dataset, [500, len(dataset) - 500])
 datasetValid = CheXpertDataSet(pathFileValid, transformSequence)            
 
