@@ -25,7 +25,7 @@ from heatmap import HeatmapGenerator
 # Each file contains pairs (path to image, output vector)
 # pathFileTrain = '../CheXpert-v1.0-small/train.csv'
 pathFileTrain = 'CheXpert-v1.0-small/train.csv'
-pathFileTrainLateral = 'train_lateral.csv'
+pathFileTrainFrontalPa = 'train_frontal_pa.csv'
 pathFileValid = 'CheXpert-v1.0-small/valid.csv'
 
 # Neural network parameters:
@@ -64,7 +64,7 @@ transformSequence=transforms.Compose(transformList)
 
 #LOAD DATASET
 #dataset = CheXpertDataSet(pathFileTrain ,transformSequence, policy=policy)
-dataset = CheXpertDataSet(pathFileTrainLateral ,transformSequence, policy=policy)
+dataset = CheXpertDataSet(pathFileTrainFrontalPa ,transformSequence, policy=policy)
 
 datasetTest, datasetTrain = random_split(dataset, [500, len(dataset) - 500])
 datasetValid = CheXpertDataSet(pathFileValid, transformSequence)            
