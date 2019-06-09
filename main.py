@@ -25,7 +25,7 @@ from heatmap import HeatmapGenerator
 # Each file contains pairs (path to image, output vector)
 # pathFileTrain = '../CheXpert-v1.0-small/train.csv'
 #pathFileTrain = 'CheXpert-v1.0-small/train.csv'
-pathFileTrainFrontalPa = 'train_frontal_ap.csv'
+pathFileTrainFrontalPa = 'train_lateral.csv'
 #pathFileTrainFrontalAp = 'train_frontal_ap.csv'
 pathFileValid = 'CheXpert-v1.0-small/valid.csv'
 
@@ -63,12 +63,23 @@ transformList.append(transforms.ToTensor())
 transformList.append(normalize)      
 transformSequence=transforms.Compose(transformList)
 
+def seed_torch(seed=1029):
+    random.seed(seed)
+    os.environ['PYTHONHASHSEED'] = str(seed)
+    np.random.seed(seed)
+    torch.manual_seed(seed)
+    torch.cuda.manual_seed(seed)
+    torch.cuda.manual_seed_all(seed) # if you are using multi-GPU.
+    torch.backends.cudnn.benchmark = False
+    torch.backends.cudnn.deterministic = True
+seed_torch()
+
 #LOAD DATASET
 #dataset = CheXpertDataSet(pathFileTrain ,transformSequence, policy=policy)
 dataset = CheXpertDataSet(pathFileTrainFrontalPa,transformSequence, policy=policy)
 
 datasetTest, datasetTrain = random_split(dataset, [500, len(dataset) - 500])
-datasetTest = torch.load("test_frontal_ap.txt")
+torch.save(datasetTest, "test_lateral.txt")
 
 datasetValid = CheXpertDataSet(pathFileValid, transformSequence)            
 
