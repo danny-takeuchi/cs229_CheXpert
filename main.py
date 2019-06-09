@@ -21,13 +21,7 @@ from train import CheXpertTrainer
 import models as mod
 from heatmap import HeatmapGenerator
 
-# Paths to the files with training, and validation sets.
-# Each file contains pairs (path to image, output vector)
-# pathFileTrain = '../CheXpert-v1.0-small/train.csv'
-#pathFileTrain = 'CheXpert-v1.0-small/train.csv'
-pathFileTrainFrontalPa = 'train_lateral.csv'
-#pathFileTrainFrontalAp = 'train_frontal_ap.csv'
-pathFileValid = 'CheXpert-v1.0-small/valid.csv'
+
 
 # Neural network parameters:
 nnIsTrained = False                 #pre-trained using ImageNet
@@ -73,6 +67,14 @@ def seed_torch(seed=1029):
     torch.backends.cudnn.benchmark = False
     torch.backends.cudnn.deterministic = True
 seed_torch()
+
+# Paths to the files with training, and validation sets.
+# Each file contains pairs (path to image, output vector)
+# pathFileTrain = '../CheXpert-v1.0-small/train.csv'
+#pathFileTrain = 'CheXpert-v1.0-small/train.csv'
+pathFileTrainFrontalPa = 'train_lateral.csv'
+#pathFileTrainFrontalAp = 'train_frontal_ap.csv'
+pathFileValid = 'CheXpert-v1.0-small/valid.csv'
 
 #LOAD DATASET
 #dataset = CheXpertDataSet(pathFileTrain ,transformSequence, policy=policy)
