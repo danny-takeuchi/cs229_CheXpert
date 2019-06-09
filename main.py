@@ -25,8 +25,8 @@ from heatmap import HeatmapGenerator
 # Each file contains pairs (path to image, output vector)
 # pathFileTrain = '../CheXpert-v1.0-small/train.csv'
 #pathFileTrain = 'CheXpert-v1.0-small/train.csv'
-#pathFileTrainFrontalPa = 'train_frontal_pa.csv'
-pathFileTrainFrontalAp = 'train_frontal_ap.csv'
+pathFileTrainFrontalPa = 'train_frontal_pa.csv'
+#pathFileTrainFrontalAp = 'train_frontal_ap.csv'
 pathFileValid = 'CheXpert-v1.0-small/valid.csv'
 
 # Neural network parameters:
@@ -39,9 +39,9 @@ modelName = "Vgg19"
 policy = "ones"
 trBatchSize = 64
 trMaxEpoch = 3
-action = "train" # train or test
-onesModeltoTest = "checkpoints/Vgg19-ones/m-epoch2-Vgg19-ones-27052019-010504.pth.tar"
-# onesModeltoTest = "m-epoch1-Vgg19-ones-26042019-025551.pth.tar"
+action = "test" # train or test
+# onesModeltoTest = "checkpoints/Vgg19-ones/m-epoch2-Vgg19-ones-27052019-010504.pth.tar"
+onesModeltoTest = "checkpoints/mixedTrainModels/DenseNet/model_ones_3epoch_densenet.tar"
 # zerosModeltoTest = "m-epoch2-Vgg19-zeros-260019-135938.pth.tar"
 
 # Parameters related to image transforms: size of the down-scaled image, cropped image
@@ -65,7 +65,7 @@ transformSequence=transforms.Compose(transformList)
 
 #LOAD DATASET
 #dataset = CheXpertDataSet(pathFileTrain ,transformSequence, policy=policy)
-dataset = CheXpertDataSet(pathFileTrainFrontalAp,transformSequence, policy=policy)
+dataset = CheXpertDataSet(pathFileTrainFrontalPa,transformSequence, policy=policy)
 
 datasetTest, datasetTrain = random_split(dataset, [500, len(dataset) - 500])
 datasetTest = torch.load("test.txt")
