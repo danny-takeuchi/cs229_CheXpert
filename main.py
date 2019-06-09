@@ -25,7 +25,7 @@ from heatmap import HeatmapGenerator
 # Each file contains pairs (path to image, output vector)
 # pathFileTrain = '../CheXpert-v1.0-small/train.csv'
 #pathFileTrain = 'CheXpert-v1.0-small/train.csv'
-pathFileTrainFrontalPa = 'train_frontal_pa.csv'
+pathFileTrainFrontalPa = 'train_frontal_ap.csv'
 #pathFileTrainFrontalAp = 'train_frontal_ap.csv'
 pathFileValid = 'CheXpert-v1.0-small/valid.csv'
 
@@ -35,7 +35,7 @@ nnClassCount = 14                   #dimension of the output
 
 # Training settings: batch size, maximum number of epochs
 # ["DenseNet121","Vgg16","Vgg19"]
-modelName = "Vgg19"
+modelName = "DenseNet121"
 policy = "ones"
 trBatchSize = 64
 trMaxEpoch = 3
@@ -68,7 +68,7 @@ transformSequence=transforms.Compose(transformList)
 dataset = CheXpertDataSet(pathFileTrainFrontalPa,transformSequence, policy=policy)
 
 datasetTest, datasetTrain = random_split(dataset, [500, len(dataset) - 500])
-datasetTest = torch.load("test.txt")
+datasetTest = torch.load("test_frontal_ap.txt")
 
 datasetValid = CheXpertDataSet(pathFileValid, transformSequence)            
 
