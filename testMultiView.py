@@ -49,7 +49,9 @@ class CheXpertTrainer():
                 if (i % 1000) == 0:
                     print(i)
             print("finished looping!")
+            patientCounter = 0
             for patientStudy, infoList in patientsDict.items():
+                patientCounter += 1
                 predictionsForPatientStudy = []
                 for patientInfo in infoList:
                     input = patientInfo[0]
@@ -61,14 +63,16 @@ class CheXpertTrainer():
                     varInput = input.view(-1, c, h, w)
                     if viewType == 'FrontalAP':
                         out = modelAP(varInput)
-                    elif viewType == 'FrontalPA'
+                    elif viewType == 'FrontalPA':
                         out = modelPA(varInput)
                     else:
                         out = modelLat(varInput)
                     predictionsForPatientStudy.append(out)
                 for prediction in predictionsForPatientStudy:
-                    newPrediction = np.mean(predictionsForPatientStudy)
+                    newPrediction = torch.mean(torch.stack(predictionsForPatientStudy), dim=0)
                     outPRED = torch.cat((outPRED, newPrediction), 0)
+                if (patientCounter % 100) == 0:
+                    print(patientCounter)
         aurocIndividual = CheXpertTrainer.computeAUROC(self, outGT, outPRED, nnClassCount)
         aurocMean = np.array(aurocIndividual).mean()
         
