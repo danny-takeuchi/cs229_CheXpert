@@ -156,7 +156,7 @@ print('got features')
 test_pred_labels = None
 
 for i in range(nnClassCount):
-    svclassifier = SVC(kernel='poly') 
+    svclassifier = SVC(kernel='sigmoid') 
     unique_labels = np.unique(train_labels[:,i])
     randindex = np.random.randint(low = 0,high= len(train_labels)-1)
     if(len(unique_labels) == 1):
