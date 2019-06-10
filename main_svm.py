@@ -166,10 +166,13 @@ for i in range(nnClassCount):
             train_labels[randindex,i] = 1
     svclassifier.fit(train_features,train_labels[:,i])
     test_pred = torch.from_numpy(svclassifier.predict(test_features))
+    print(type(test_pred), 'test_pred')
     if(i == 0):
         test_pred_labels = test_pred
+        print(type(test_pred_labels), 'test_pred_labels')
     else:
-       test_pred_labels = torch.cat((test_pred_labels, test_pred),1)
+        print(type(test_pred_labels), '2')
+        test_pred_labels = torch.cat((test_pred_labels, test_pred),1)
 
 outAUROC = []   
 #test_labels = test_labels.detach().cpu().clone().numpy()
