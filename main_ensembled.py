@@ -34,9 +34,9 @@ policy = "ones"
 trBatchSize = 64
 trMaxEpoch = 3
 action = "test" # train or test
-paModel = "checkpoints/specificTrainModels/pa/m-epoch1-Vgg19-ones-08062019-133446.pth.tar"
-apModel = "checkpoints/specificTrainModels/ap/m-epoch1-Vgg19-ones-08062019-235513.pth.tar"
-latModel = "checkpoints/specificTrainModels/lateral/m-epoch2-Vgg19-ones-08062019-080125.pth.tar"
+paCheckpoint = "checkpoints/specificTrainModels/pa/m-epoch1-Vgg19-ones-08062019-133446.pth.tar"
+apCheckpoint = "checkpoints/specificTrainModels/ap/m-epoch1-Vgg19-ones-08062019-235513.pth.tar"
+latCheckpoint = "checkpoints/specificTrainModels/lateral/m-epoch2-Vgg19-ones-08062019-080125.pth.tar"
 
 # onesModeltoTest = "checkpoints/mixedTrainModels/Vgg16-ones/m-epoch1-Vgg16-ones-07062019-052816.pth.tar"
 # zerosModeltoTest = "m-epoch2-Vgg19-zeros-260019-135938.pth.tar"
@@ -91,8 +91,14 @@ dataLoaderVal = DataLoader(dataset=datasetValid, batch_size=trBatchSize, shuffle
 dataLoaderTest = DataLoader(dataset=datasetTest, num_workers=24, pin_memory=True)
 
 # initialize and load the model
-model = mod.getmodel(modelName,nnClassCount)
-model = torch.nn.DataParallel(model).cuda()
+modelPA = mod.getmodel(modelName,nnClassCount)
+modelPA = torch.nn.DataParallel(model).cuda()
+
+modelAP = mod.getmodel(modelName,nnClassCount)
+modelAP = torch.nn.DataParallel(model).cuda()
+
+modelLat = mod.getmodel(modelName,nnClassCount)
+modelLat = torch.nn.DataParallel(model).cuda()
 
 
 class_names = ['No Finding', 'Enlarged Cardiomediastinum', 'Cardiomegaly', 'Lung Opacity', 
@@ -100,7 +106,7 @@ class_names = ['No Finding', 'Enlarged Cardiomediastinum', 'Cardiomegaly', 'Lung
                'Pleural Effusion', 'Pleural Other', 'Fracture', 'Support Devices']
 
 
-outGT1, outPRED1 = CheXpertTrainer.testMulti(CheXpertTrainer, model, dataLoaderTest, nnClassCount, paModel, apModel, latModel, class_names)
+outGT1, outPRED1 = CheXpertTrainer.testMulti(CheXpertTrainer, modelPA, modelAP, modelLat, dataLoaderTest, nnClassCount, paCheckpoint, apCheckpoint, latCheckpoint, class_names)
 # outGT3, outPRED3 = CheXpertTrainer.test(CheXpertTrainer, model, dataLoaderTest, nnClassCount, zerosModeltoTest, class_names)
 #outGT4, outPRED4 = CheXpertTrainer.test(model, dataLoaderTest, nnClassCount, "model4.pth.tar", class_names)
 
