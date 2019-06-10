@@ -147,7 +147,7 @@ test_pred_labels = None
 for i in range(nnClassCount):
 	svclassifier = SVC(kernel='linear') 
 	svclassifier.fit(train_features.detach().cpu().clone().numpy(),train_labels[:,i].detach().cpu().clone().numpy())
-	test_pred = svclassifier.predict(test_features)
+	test_pred = svclassifier.predict(test_features.detach().cpu().clone().numpy())
 	#print(confusion_matrix(y_test,y_pred))  
 	#print(classification_report(y_test,y_pred))  
 	if(test_pred_labels == None):
@@ -156,8 +156,8 @@ for i in range(nnClassCount):
 		test_pred_labels = torch.cat((test_pred_labels, test_pred),1)
 
 outAUROC = []   
-test_labels = test_labels.cpu().numpy()
-test_pred_labels = test_pred_labels.cpu().numpy()
+test_labels = test_labels.detach().cpu().clone().numpy()
+test_pred_labels = test_pred_labels.detach().cpu().clone().numpy()
 for i in range(classCount):
     try:
         outAUROC.append(roc_auc_score(test_labels[:, i], test_pred_labels[:, i]))
