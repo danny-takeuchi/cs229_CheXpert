@@ -39,10 +39,11 @@ class CheXpertTrainer():
         modelPA.eval()
         modelAP.eval()
         modelLat.eval()
-
+        print("about to loop")
         patientsDict = defaultdict(list) 
         with torch.no_grad():
             for i, (input, target, patient, study, view) in enumerate(dataLoaderTest):
+                print(view)
                 dictKey = (patient[0], study[0])
                 patientsDict[dictKey].append((input, view, target))
             for patientStudy, infoList in patientsDict.items():
