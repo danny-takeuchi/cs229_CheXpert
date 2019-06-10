@@ -146,6 +146,7 @@ test_pred_labels = None
 
 for i in range(nnClassCount):
 	svclassifier = SVC(kernel='linear') 
+	print(train_labels[:,i].detach().cpu().clone().numpy())
 	print(np.unique(train_labels[:,i].detach().cpu().clone().numpy()))
 	svclassifier.fit(train_features.detach().cpu().clone().numpy(),train_labels[:,i].detach().cpu().clone().numpy())
 	test_pred = svclassifier.predict(test_features.detach().cpu().clone().numpy())
