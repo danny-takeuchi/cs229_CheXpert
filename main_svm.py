@@ -180,7 +180,7 @@ for i in range(nnClassCount):
 outAUROC = []   
 #test_labels = test_labels.detach().cpu().clone().numpy()
 #test_pred_labels = test_pred_labels.detach().cpu().clone().numpy()
-for i in range(classCount):
+for i in range(nnClassCount):
     try:
         outAUROC.append(roc_auc_score(test_labels[:, i], test_pred_labels[:, i]))
     except ValueError:
