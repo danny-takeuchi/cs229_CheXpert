@@ -11,7 +11,7 @@ use_gpu = torch.cuda.is_available()
 
 class CheXpertTrainer():
     
-    def test(self, model1, model2, model3, dataLoaderTest, nnClassCount, checkpoint, class_names):   
+    def testMulti(self, modelPA, modelAP, modelLat, dataLoaderTest, nnClassCount, paCheckpoint, apCheckpoint, latCheckpoint, class_names):   
         
         cudnn.benchmark = True
         

@@ -17,7 +17,7 @@ import sklearn.metrics as metrics
 import random
 
 from datasetRay import CheXpertDataSet
-from train import CheXpertTrainer
+from testMultiView import CheXpertTrainer
 import models as mod
 from heatmap import HeatmapGenerator
 
@@ -34,7 +34,10 @@ policy = "ones"
 trBatchSize = 64
 trMaxEpoch = 3
 action = "test" # train or test
-onesModeltoTest = "checkpoints/mixedTrainModels/DenseNet/model_ones_3epoch_densenet.tar"
+paModel = "checkpoints/specificTrainModels/pa/m-epoch1-Vgg19-ones-08062019-133446.pth.tar"
+apModel = "checkpoints/specificTrainModels/ap/m-epoch1-Vgg19-ones-08062019-235513.pth.tar"
+latModel = "checkpoints/specificTrainModels/lateral/m-epoch2-Vgg19-ones-08062019-080125.pth.tar"
+
 # onesModeltoTest = "checkpoints/mixedTrainModels/Vgg16-ones/m-epoch1-Vgg16-ones-07062019-052816.pth.tar"
 # zerosModeltoTest = "m-epoch2-Vgg19-zeros-260019-135938.pth.tar"
 
@@ -91,12 +94,13 @@ dataLoaderTest = DataLoader(dataset=datasetTest, num_workers=24, pin_memory=True
 model = mod.getmodel(modelName,nnClassCount)
 model = torch.nn.DataParallel(model).cuda()
 
+
 class_names = ['No Finding', 'Enlarged Cardiomediastinum', 'Cardiomegaly', 'Lung Opacity', 
                'Lung Lesion', 'Edema', 'Consolidation', 'Pneumonia', 'Atelectasis', 'Pneumothorax', 
                'Pleural Effusion', 'Pleural Other', 'Fracture', 'Support Devices']
 
 
-outGT1, outPRED1 = CheXpertTrainer.test(CheXpertTrainer, model, dataLoaderTest, nnClassCount, onesModeltoTest, class_names)
+outGT1, outPRED1 = CheXpertTrainer.testMulti(CheXpertTrainer, model, dataLoaderTest, nnClassCount, paModel, apModel, latModel, class_names)
 # outGT3, outPRED3 = CheXpertTrainer.test(CheXpertTrainer, model, dataLoaderTest, nnClassCount, zerosModeltoTest, class_names)
 #outGT4, outPRED4 = CheXpertTrainer.test(model, dataLoaderTest, nnClassCount, "model4.pth.tar", class_names)
 
