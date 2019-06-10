@@ -51,8 +51,8 @@ nnClassCount = 14                   #dimension of the output
 # ["DenseNet121","Vgg16","Vgg19"]
 modelName = "Vgg19"
 policy = "ones"
-trBatchSize = 32
-testBatchSize = 25
+trBatchSize = 16
+testBatchSize = 5
 trMaxEpoch = 3
 action = "train" # train or test
 # onesModeltoTest = "checkpoints/Vgg19-ones/m-epoch2-Vgg19-ones-27052019-010504.pth.tar"
