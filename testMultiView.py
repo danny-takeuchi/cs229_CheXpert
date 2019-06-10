@@ -10,6 +10,7 @@ from collections import defaultdict
 
 use_gpu = torch.cuda.is_available()
 
+
 class CheXpertTrainer():
     
     def testMulti(self, modelPA, modelAP, modelLat, dataLoaderTest, nnClassCount, paCheckpoint, apCheckpoint, latCheckpoint, class_names):   
@@ -49,15 +50,25 @@ class CheXpertTrainer():
                     print(i)
             print("finished looping!")
             for patientStudy, infoList in patientsDict.items():
+                predictionsForPatientStudy = []
                 for patientInfo in infoList:
+                    input = patientInfo[0]
+                    viewType = patientInfo[1]
+                    target = patientInfo[2]
                     target = target.cuda()
                     outGT = torch.cat((outGT, target), 0).cuda()
-
                     bs, c, h, w = input.size()
                     varInput = input.view(-1, c, h, w)
-                
-                    out = model(varInput)
-                    outPRED = torch.cat((outPRED, out), 0)
+                    if viewType == 'FrontalAP':
+                        out = modelAP(varInput)
+                    elif viewType == 'FrontalPA'
+                        out = modelPA(varInput)
+                    else:
+                        out = modelLat(varInput)
+                    predictionsForPatientStudy.append(out)
+                for prediction in predictionsForPatientStudy:
+                    newPrediction = np.mean(predictionsForPatientStudy)
+                    outPRED = torch.cat((outPRED, newPrediction), 0)
         aurocIndividual = CheXpertTrainer.computeAUROC(self, outGT, outPRED, nnClassCount)
         aurocMean = np.array(aurocIndividual).mean()
         
