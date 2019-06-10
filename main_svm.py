@@ -146,7 +146,7 @@ test_pred_labels = None
 
 for i in range(nnClassCount):
 	svclassifier = SVC(kernel='linear') 
-	svclassifier.fit(train_features.detach().numpy(),train_labels[:,i].detach().numpy())
+	svclassifier.fit(train_features.deatch().cpu().clone().numpy(),train_labels[:,i].deatch().cpu().clone().numpy())
 	test_pred = svclassifier.predict(test_features)
 	#print(confusion_matrix(y_test,y_pred))  
 	#print(classification_report(y_test,y_pred))  
