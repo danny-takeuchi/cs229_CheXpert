@@ -92,13 +92,13 @@ dataLoaderTest = DataLoader(dataset=datasetTest, num_workers=24, pin_memory=True
 
 # initialize and load the model
 modelPA = mod.getmodel(modelName,nnClassCount)
-modelPA = torch.nn.DataParallel(model).cuda()
+modelPA = torch.nn.DataParallel(modelPA).cuda()
 
 modelAP = mod.getmodel(modelName,nnClassCount)
-modelAP = torch.nn.DataParallel(model).cuda()
+modelAP = torch.nn.DataParallel(modelAP).cuda()
 
 modelLat = mod.getmodel(modelName,nnClassCount)
-modelLat = torch.nn.DataParallel(model).cuda()
+modelLat = torch.nn.DataParallel(modelLat).cuda()
 
 
 class_names = ['No Finding', 'Enlarged Cardiomediastinum', 'Cardiomegaly', 'Lung Opacity', 
