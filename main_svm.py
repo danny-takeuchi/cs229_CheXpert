@@ -33,8 +33,6 @@ from sklearn.svm import SVC
 from sklearn.metrics import classification_report, confusion_matrix  
 
 
-
-
 # Paths to the files with training, and validation sets.
 # Each file contains pairs (path to image, output vector)
 #pathFileTrain = '../CheXpert-v1.0-small/train.csv'
@@ -51,13 +49,13 @@ nnClassCount = 14                   #dimension of the output
 # ["DenseNet121","Vgg16","Vgg19"]
 modelName = "Vgg19"
 policy = "ones"
-trBatchSize = 16
+trBatchSize = 10
 testBatchSize = 5
 trMaxEpoch = 3
 action = "train" # train or test
-# onesModeltoTest = "checkpoints/Vgg19-ones/m-epoch2-Vgg19-ones-27052019-010504.pth.tar"
+#onesModeltoTest = "checkpoints/Vgg19-ones/m-epoch2-Vgg19-ones-27052019-010504.pth.tar"
 #onesModeltoTest = "checkpoints/mixedTrainModels/DenseNet/model_ones_3epoch_densenet.tar"
-# zerosModeltoTest = "m-epoch2-Vgg19-zeros-260019-135938.pth.tar"
+#zerosModeltoTest = "m-epoch2-Vgg19-zeros-260019-135938.pth.tar"
 
 # Parameters related to image transforms: size of the down-scaled image, cropped image
 imgtransResize = (320, 320)
@@ -86,7 +84,7 @@ dataset = CheXpertDataSet(pathFileTrain,transformSequence, policy=policy)
 
 
 #datasetTest, datasetTrain = random_split(dataset, [500, len(dataset) - 500])
-datasetTest, datasetTrain = random_split(dataset, [10000, len(dataset) - 10000])
+datasetTest, datasetTrain = random_split(dataset, [50, len(dataset) - 50])
 
 #datasetTest = torch.load("test.txt")
 
@@ -96,7 +94,7 @@ dataLoaderTrain = DataLoader(dataset=datasetTest, batch_size=trBatchSize, shuffl
 #dataLoaderTrain = DataLoader(dataset=datasetTrain, batch_size=len(dataset)-500, shuffle=True,  num_workers=24, pin_memory=True)
 #dataLoaderTrain = DataLoader(dataset=datasetTrain, batch_size=trBatchSize, shuffle=True,  num_workers=24, pin_memory=True)
 dataLoaderVal = DataLoader(dataset=datasetValid, batch_size=trBatchSize, shuffle=False, num_workers=24, pin_memory=True)
-dataLoaderTest = DataLoader(dataset=datasetValid, batch_size = testBatchSize, shuffle = True, num_workers=24, pin_memory=True)
+dataLoaderTest = DataLoader(dataset=datasetTest, batch_size = testBatchSize, shuffle = True, num_workers=24, pin_memory=True)
 #dataLoaderTest = DataLoader(dataset=datasetTest, batch_size = 500, num_workers=24, pin_memory=True)
 
 class DenseNet121(nn.Module):
@@ -149,7 +147,7 @@ test_features = None
 test_labels = None
 
 for batchID, (varInput, target) in enumerate(dataLoaderTest):
-    if(batchID < 10):       
+    if(batchID < 5):       
         varTarget = target.cuda(non_blocking = True)
         if varInput.shape[0] != testBatchSize:
             continue
@@ -192,9 +190,11 @@ outAUROC = []
 for i in range(nnClassCount):
     try:
         outAUROC.append(roc_auc_score(test_labels[:, i], test_pred_labels[:, i]))
+        outAUROC.append(roc_auc_score(test_labels[:, i], test_pred_labels[:, i]))
+
     except ValueError:
         pass
-aurocMean = np.array(outAUROC).mean()
+aurocMean = np.array(outAUROC)
 print(aurocMean, 'aurocMean')
 
 
