@@ -14,6 +14,7 @@ class CheXpertDataSet(Dataset):
         labels = []
         patients = []
         studies = []
+        views = []
 
         with open(image_list_file, "r") as f:
             csvReader = csv.reader(f)
@@ -25,6 +26,7 @@ class CheXpertDataSet(Dataset):
                 label = line[5:]
                 patient = image_name.split('/', 3)[2]
                 study = image_name.split('/', 4)[3]
+                view = line[3] + line[4]
 
                 
                 for i in range(14):
@@ -48,12 +50,14 @@ class CheXpertDataSet(Dataset):
                 labels.append(label)
                 patients.append(patient)
                 studies.append(study)
+                views.append(view)
 
         self.image_names = image_names
         self.labels = labels
         self.patients = patients
         self.studies = studies
         self.transform = transform
+        self.views = views
 
     def __getitem__(self, index):
         """Take the index of item and returns the image and its labels"""
@@ -63,9 +67,10 @@ class CheXpertDataSet(Dataset):
         label = self.labels[index]
         patient = self.patients[index]
         study = self.studies[index]
+        view = self.views[index]
         if self.transform is not None:
             image = self.transform(image)
-        return image, torch.FloatTensor(label), patient, study 
+        return image, torch.FloatTensor(label), patient, study, view
 
     def __len__(self):
         return len(self.image_names)
