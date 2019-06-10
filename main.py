@@ -16,7 +16,7 @@ import torch.nn.functional as func
 import sklearn.metrics as metrics
 import random
 
-from datasetRay import CheXpertDataSet
+from dataset import CheXpertDataSet
 from train import CheXpertTrainer
 import models as mod
 from heatmap import HeatmapGenerator
@@ -29,12 +29,12 @@ nnClassCount = 14                   #dimension of the output
 
 # Training settings: batch size, maximum number of epochs
 # ["DenseNet121","Vgg16","Vgg19"]
-modelName = "Vgg19"
+modelName = "DenseNet121"
 policy = "ones"
 trBatchSize = 64
 trMaxEpoch = 3
 action = "test" # train or test
-onesModeltoTest = "checkpoints/specificTrainModels/lateral/m-epoch2-Vgg19-ones-08062019-080125.pth.tar"
+onesModeltoTest = "checkpoints/mixedTrainModels/DenseNet/model_ones_3epoch_densenet.tar"
 # onesModeltoTest = "checkpoints/mixedTrainModels/Vgg16-ones/m-epoch1-Vgg16-ones-07062019-052816.pth.tar"
 # zerosModeltoTest = "m-epoch2-Vgg19-zeros-260019-135938.pth.tar"
 
@@ -70,9 +70,9 @@ seed_torch()
 
 # Paths to the files with training, and validation sets.
 # Each file contains pairs (path to image, output vector)
-# pathFileTrain = '../CheXpert-v1.0-small/train.csv'
+pathFileTrain = 'train_frontal_ap.csv'
 #pathFileTrain = 'CheXpert-v1.0-small/train.csv'
-pathFileTrain = 'train_lateral.csv'
+# pathFileTrain = 'CheXpert-v1.0-small/multiViewCSV.csv'
 pathFileValid = 'CheXpert-v1.0-small/valid.csv'
 
 #LOAD DATASET
