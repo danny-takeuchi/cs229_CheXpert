@@ -128,8 +128,8 @@ for batchID, (varInput, target) in enumerate(dataLoaderTrain):
     varOutput = model(varInput)
     print('took time')
     if(batchID == 0):
-    	train_labels = varTarget.detach().cpu().clone()
-    	train_features = varOutput.detach().cpu().clone()
+        train_labels = varTarget.detach().cpu().clone()
+        train_features = varOutput.detach().cpu().clone()
     else:
         train_labels = torch.cat((train_labels, varTarget.detach().cpu().clone()),0) 
         train_features = torch.cat((train_features, varOutput.detach().cpu().clone()),0)
@@ -160,9 +160,9 @@ for i in range(nnClassCount):
     svclassifier.fit(train_features,train_labels[:,i])
     test_pred = svclassifier.predict(test_features) 
     if(test_pred_labels == None):
-		test_pred_labels = test_pred
-	else:
-	   test_pred_labels = torch.cat((test_pred_labels, test_pred),1)
+        test_pred_labels = test_pred
+    else:
+       test_pred_labels = torch.cat((test_pred_labels, test_pred),1)
 
 outAUROC = []   
 #test_labels = test_labels.detach().cpu().clone().numpy()
