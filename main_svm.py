@@ -81,22 +81,22 @@ transformSequence=transforms.Compose(transformList)
 #LOAD DATASET
 #dataset = CheXpertDataSet(pathFileTrain ,transformSequence, policy=policy)
 #dataset = CheXpertDataSet(pathFileTrainFrontalAp,transformSequence, policy=policy)
-dataset = CheXpertDataSet(pathFileValid,transformSequence, policy=policy)
+dataset = CheXpertDataSet(pathFileTrain,transformSequence, policy=policy)
 
 
 
 #datasetTest, datasetTrain = random_split(dataset, [500, len(dataset) - 500])
-datasetTest, datasetTrain = random_split(dataset, [100, len(dataset) - 100])
+datasetTest, datasetTrain = random_split(dataset, [1000, len(dataset) - 1000])
 
 #datasetTest = torch.load("test.txt")
 
 datasetValid = CheXpertDataSet(pathFileValid, transformSequence)            
 
-dataLoaderTrain = DataLoader(dataset=datasetTrain, batch_size=trBatchSize, shuffle=True,  num_workers=24, pin_memory=True)
+dataLoaderTrain = DataLoader(dataset=datasetTest, batch_size=trBatchSize, shuffle=True,  num_workers=24, pin_memory=True)
 #dataLoaderTrain = DataLoader(dataset=datasetTrain, batch_size=len(dataset)-500, shuffle=True,  num_workers=24, pin_memory=True)
 #dataLoaderTrain = DataLoader(dataset=datasetTrain, batch_size=trBatchSize, shuffle=True,  num_workers=24, pin_memory=True)
 dataLoaderVal = DataLoader(dataset=datasetValid, batch_size=trBatchSize, shuffle=False, num_workers=24, pin_memory=True)
-dataLoaderTest = DataLoader(dataset=datasetTest, batch_size = testBatchSize, shuffle = True, num_workers=24, pin_memory=True)
+dataLoaderTest = DataLoader(dataset=datasetValid, batch_size = testBatchSize, shuffle = True, num_workers=24, pin_memory=True)
 #dataLoaderTest = DataLoader(dataset=datasetTest, batch_size = 500, num_workers=24, pin_memory=True)
 
 class DenseNet121(nn.Module):
