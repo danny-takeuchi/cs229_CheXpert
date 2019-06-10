@@ -128,8 +128,16 @@ for batchID, (varInput, target) in enumerate(dataLoaderTrain):
     varOutput = model(varInput)
     print('took time')
     if(batchID == 0):
-    	train_labels = varTarget.cuda(non_blocking = True)
-    	train_features = varOutput
+    	train_labels = varTarget.detach().cpu().clone()
+    	train_features = varOutput.detach().cpu().clone()
+    else:
+        train_labels = torch.cat((train_labels, varTarget.detach().cpu().clone()),0) 
+        train_features = torch.cat((train_features, varOutput.detach().cpu().clone()),0)
+
+    
+#shape of train_features
+#batch by num_features 
+#batch by nnClassCount 
 
 test_features = None
 test_labels = None
@@ -138,19 +146,21 @@ for batchID, (varInput, target) in enumerate(dataLoaderTest):
     varTarget = target.cuda(non_blocking = True)
     varOutput = model(varInput)
     if(batchID == 0):
-    	test_labels = varTarget.cuda(non_blocking = True)
-    	test_features = varOutput
-
-print(train_features)
-print(train_labels)
+        test_labels = varTarget.detach().cpu().clone()
+        test_features = varOutput.detach().cpu().clone()
+    else:
+        test_labels = torch.cat((train_labels, varTarget.detach().cpu().clone()),0) 
+        test_features = torch.cat((train_features, varOutput.detach().cpu().clone()),0)
 
 print('got features')
 test_pred_labels = None
 
 for i in range(nnClassCount):
 	svclassifier = SVC(kernel='linear') 
-	svclassifier.fit(train_features.detach().cpu().clone().numpy(),train_labels[:,i].detach().cpu().clone().numpy())
-	test_pred = svclassifier.predict(test_features.detach().cpu().clone().numpy())
+    svclassifier.fit(train_features,train_labels[:,i])
+    test_pred = svclassifier.predict(test_features)
+	#svclassifier.fit(train_features.detach().cpu().clone().numpy(),train_labels[:,i].detach().cpu().clone().numpy())
+	#test_pred = svclassifier.predict(test_features.detach().cpu().clone().numpy())
 	#print(confusion_matrix(y_test,y_pred))  
 	#print(classification_report(y_test,y_pred))  
 	if(test_pred_labels == None):
@@ -159,8 +169,8 @@ for i in range(nnClassCount):
 		test_pred_labels = torch.cat((test_pred_labels, test_pred),1)
 
 outAUROC = []   
-test_labels = test_labels.detach().cpu().clone().numpy()
-test_pred_labels = test_pred_labels.detach().cpu().clone().numpy()
+#test_labels = test_labels.detach().cpu().clone().numpy()
+#test_pred_labels = test_pred_labels.detach().cpu().clone().numpy()
 for i in range(classCount):
     try:
         outAUROC.append(roc_auc_score(test_labels[:, i], test_pred_labels[:, i]))
