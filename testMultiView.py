@@ -26,7 +26,7 @@ class CheXpertTrainer():
             except ValueError:
                 pass
         return outAUROC
-    """
+    
     def testMulti(self, modelPA, modelAP, modelLat, dataLoaderTest, nnClassCount, paCheckpoint, apCheckpoint, latCheckpoint, class_names):   
         
         cudnn.benchmark = True
@@ -81,19 +81,10 @@ class CheXpertTrainer():
                         out = modelPA(varInput)
                     else:
                         out = modelLat(varInput)
-                    outPRED = torch.cat((outPRED, out), 0)
-                    
-                    """
-                    """
                     predictionsForPatientStudy.append(out)
-                print(patientStudy)
                 for prediction in predictionsForPatientStudy:
-                    print(prediction)
                     newPrediction = torch.mean(torch.stack(predictionsForPatientStudy), dim=0)
                     outPRED = torch.cat((outPRED, newPrediction), 0) 
-                print(newPrediction)
-                """
-                """
                 if (patientCounter % 100) == 0:
                     print(patientCounter)
         aurocIndividual = CheXpertTrainer.computeAUROC(self, outGT, outPRED, nnClassCount)
@@ -105,9 +96,9 @@ class CheXpertTrainer():
             print (class_names[i], ' ', aurocIndividual[i])
         
         return outGT, outPRED
+ 
     """
-
-        def testMulti(self, modelPA, modelAP, modelLat, dataLoaderTest, nnClassCount, paCheckpoint, apCheckpoint, latCheckpoint, class_names):   
+    def testMulti(self, modelPA, modelAP, modelLat, dataLoaderTest, nnClassCount, paCheckpoint, apCheckpoint, latCheckpoint, class_names):   
         
         cudnn.benchmark = True
         print("In testMulti")
@@ -136,7 +127,7 @@ class CheXpertTrainer():
         modelLat.eval()
         print("about to loop")
         with torch.no_grad():
-            for i, (input, target) in enumerate(dataLoaderTest):
+            for i, (input, target, patient, study, view) in enumerate(dataLoaderTest):
 
                 target = target.cuda()
                 outGT = torch.cat((outGT, target), 0).cuda()
@@ -155,3 +146,4 @@ class CheXpertTrainer():
             print (class_names[i], ' ', aurocIndividual[i])
         
         return outGT, outPRED
+"""
