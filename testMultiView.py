@@ -15,6 +15,7 @@ class CheXpertTrainer():
     def testMulti(self, modelPA, modelAP, modelLat, dataLoaderTest, nnClassCount, paCheckpoint, apCheckpoint, latCheckpoint, class_names):   
         
         cudnn.benchmark = True
+        print("In testMulti")
         
         if paCheckpoint != None and use_gpu:
             modelPACheckpoint = torch.load(paCheckpoint)
