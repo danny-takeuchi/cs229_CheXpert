@@ -51,7 +51,8 @@ nnClassCount = 14                   #dimension of the output
 # ["DenseNet121","Vgg16","Vgg19"]
 modelName = "Vgg19"
 policy = "ones"
-trBatchSize = 64
+trBatchSize = 32
+testBatchSize = 25
 trMaxEpoch = 3
 action = "train" # train or test
 # onesModeltoTest = "checkpoints/Vgg19-ones/m-epoch2-Vgg19-ones-27052019-010504.pth.tar"
@@ -79,20 +80,23 @@ transformSequence=transforms.Compose(transformList)
 
 #LOAD DATASET
 #dataset = CheXpertDataSet(pathFileTrain ,transformSequence, policy=policy)
-dataset = CheXpertDataSet(pathFileTrainFrontalAp,transformSequence, policy=policy)
+#dataset = CheXpertDataSet(pathFileTrainFrontalAp,transformSequence, policy=policy)
+dataset = CheXpertDataSet(pathFileValid,transformSequence, policy=policy)
+
+
 
 #datasetTest, datasetTrain = random_split(dataset, [500, len(dataset) - 500])
-datasetTest, datasetTrain = random_split(dataset, [50, len(dataset) - 50])
+datasetTest, datasetTrain = random_split(dataset, [100, len(dataset) - 100])
 
 #datasetTest = torch.load("test.txt")
 
 datasetValid = CheXpertDataSet(pathFileValid, transformSequence)            
 
-dataLoaderTrain = DataLoader(dataset=datasetTest, batch_size=5, shuffle=True,  num_workers=24, pin_memory=True)
+dataLoaderTrain = DataLoader(dataset=datasetTrain, batch_size=trBatchSize, shuffle=True,  num_workers=24, pin_memory=True)
 #dataLoaderTrain = DataLoader(dataset=datasetTrain, batch_size=len(dataset)-500, shuffle=True,  num_workers=24, pin_memory=True)
 #dataLoaderTrain = DataLoader(dataset=datasetTrain, batch_size=trBatchSize, shuffle=True,  num_workers=24, pin_memory=True)
 dataLoaderVal = DataLoader(dataset=datasetValid, batch_size=trBatchSize, shuffle=False, num_workers=24, pin_memory=True)
-dataLoaderTest = DataLoader(dataset=datasetTest, batch_size = 5, shuffle = True, num_workers=24, pin_memory=True)
+dataLoaderTest = DataLoader(dataset=datasetTest, batch_size = testBatchSize, shuffle = True, num_workers=24, pin_memory=True)
 #dataLoaderTest = DataLoader(dataset=datasetTest, batch_size = 500, num_workers=24, pin_memory=True)
 
 class DenseNet121(nn.Module):
@@ -124,6 +128,8 @@ train_labels = None
 print('works')
 for batchID, (varInput, target) in enumerate(dataLoaderTrain):        
     varTarget = target.cuda(non_blocking = True)
+    if varInput.shape[0] != trBatchSize:
+        continue
     print('here')
     varOutput = model(varInput)
     print('took time')
@@ -144,6 +150,8 @@ test_labels = None
 
 for batchID, (varInput, target) in enumerate(dataLoaderTest):        
     varTarget = target.cuda(non_blocking = True)
+    if varInput.shape[0] != testBatchSize:
+        continue
     varOutput = model(varInput)
     if(batchID == 0):
         test_labels = varTarget.detach().cpu().clone()
