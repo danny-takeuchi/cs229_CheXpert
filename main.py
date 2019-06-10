@@ -16,18 +16,12 @@ import torch.nn.functional as func
 import sklearn.metrics as metrics
 import random
 
-from dataset import CheXpertDataSet
+from datasetRay import CheXpertDataSet
 from train import CheXpertTrainer
 import models as mod
 from heatmap import HeatmapGenerator
 
-# Paths to the files with training, and validation sets.
-# Each file contains pairs (path to image, output vector)
-# pathFileTrain = '../CheXpert-v1.0-small/train.csv'
-#pathFileTrain = 'CheXpert-v1.0-small/train.csv'
-pathFileTrainFrontalPa = 'train_frontal_ap.csv'
-#pathFileTrainFrontalAp = 'train_frontal_ap.csv'
-pathFileValid = 'CheXpert-v1.0-small/valid.csv'
+
 
 # Neural network parameters:
 nnIsTrained = False                 #pre-trained using ImageNet
@@ -35,13 +29,13 @@ nnClassCount = 14                   #dimension of the output
 
 # Training settings: batch size, maximum number of epochs
 # ["DenseNet121","Vgg16","Vgg19"]
-modelName = "DenseNet121"
+modelName = "Vgg19"
 policy = "ones"
 trBatchSize = 64
 trMaxEpoch = 3
 action = "test" # train or test
-# onesModeltoTest = "checkpoints/Vgg19-ones/m-epoch2-Vgg19-ones-27052019-010504.pth.tar"
-onesModeltoTest = "checkpoints/mixedTrainModels/DenseNet/model_ones_3epoch_densenet.tar"
+onesModeltoTest = "checkpoints/specificTrainModels/lateral/m-epoch2-Vgg19-ones-08062019-080125.pth.tar"
+# onesModeltoTest = "checkpoints/mixedTrainModels/Vgg16-ones/m-epoch1-Vgg16-ones-07062019-052816.pth.tar"
 # zerosModeltoTest = "m-epoch2-Vgg19-zeros-260019-135938.pth.tar"
 
 # Parameters related to image transforms: size of the down-scaled image, cropped image
@@ -63,12 +57,30 @@ transformList.append(transforms.ToTensor())
 transformList.append(normalize)      
 transformSequence=transforms.Compose(transformList)
 
+def seed_torch(seed=1029):
+    random.seed(seed)
+    os.environ['PYTHONHASHSEED'] = str(seed)
+    np.random.seed(seed)
+    torch.manual_seed(seed)
+    torch.cuda.manual_seed(seed)
+    torch.cuda.manual_seed_all(seed) # if you are using multi-GPU.
+    torch.backends.cudnn.benchmark = False
+    torch.backends.cudnn.deterministic = True
+seed_torch()
+
+# Paths to the files with training, and validation sets.
+# Each file contains pairs (path to image, output vector)
+# pathFileTrain = '../CheXpert-v1.0-small/train.csv'
+#pathFileTrain = 'CheXpert-v1.0-small/train.csv'
+pathFileTrain = 'train_lateral.csv'
+pathFileValid = 'CheXpert-v1.0-small/valid.csv'
+
 #LOAD DATASET
 #dataset = CheXpertDataSet(pathFileTrain ,transformSequence, policy=policy)
-dataset = CheXpertDataSet(pathFileTrainFrontalPa,transformSequence, policy=policy)
+dataset = CheXpertDataSet(pathFileTrain,transformSequence, policy=policy)
 
 datasetTest, datasetTrain = random_split(dataset, [500, len(dataset) - 500])
-datasetTest = torch.load("test_frontal_ap.txt")
+# datasetTest = torch.load("test_frontal_pa.txt")
 
 datasetValid = CheXpertDataSet(pathFileValid, transformSequence)            
 
