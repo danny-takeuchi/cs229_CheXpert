@@ -157,6 +157,13 @@ test_pred_labels = None
 
 for i in range(nnClassCount):
     svclassifier = SVC(kernel='linear') 
+    unique_labels = np.unique(train_labels[:,i])
+    randindex = random.randint(len(train_labels))
+    if(len(unique_labels) == 1):
+        if(1 in unique_labels):
+            train_labels[randindex,i] = 0
+        else:
+            train_labels[randindex,i] = 1
     svclassifier.fit(train_features,train_labels[:,i])
     test_pred = svclassifier.predict(test_features) 
     if(test_pred_labels == None):
