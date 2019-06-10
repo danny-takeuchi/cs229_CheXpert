@@ -81,10 +81,17 @@ class CheXpertTrainer():
                         out = modelPA(varInput)
                     else:
                         out = modelLat(varInput)
+                    outPRED = torch.cat((outPRED, out), 0)
+                    
+                    """"
                     predictionsForPatientStudy.append(out)
+                print(patientStudy)
                 for prediction in predictionsForPatientStudy:
+                    print(prediction)
                     newPrediction = torch.mean(torch.stack(predictionsForPatientStudy), dim=0)
-                    outPRED = torch.cat((outPRED, newPrediction), 0)
+                    outPRED = torch.cat((outPRED, newPrediction), 0) 
+                print(newPrediction)
+                """
                 if (patientCounter % 100) == 0:
                     print(patientCounter)
         aurocIndividual = CheXpertTrainer.computeAUROC(self, outGT, outPRED, nnClassCount)

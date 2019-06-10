@@ -75,7 +75,7 @@ seed_torch()
 # Each file contains pairs (path to image, output vector)
 # pathFileTrain = '../CheXpert-v1.0-small/train.csv'
 #pathFileTrain = 'CheXpert-v1.0-small/train.csv'
-pathFileTrain = '10kmultiViewCSV.csv'
+pathFileTrain = '1kmultiViewCSV.csv'
 pathFileValid = 'CheXpert-v1.0-small/valid.csv'
 
 #LOAD DATASET
