@@ -169,10 +169,10 @@ for i in range(nnClassCount):
     print(type(test_pred), 'test_pred')
     if(i == 0):
         test_pred_labels = test_pred
-        test_pred_labels.reshape(len(test_pred_labels),1)
+        test_pred_labels = test_pred_labels.reshape(len(test_pred_labels),1)
     else:
         print((test_pred_labels).shape, 'test_pred_labels')
-        test_pred.reshape(len(test_pred),1)
+        test_pred = test_pred.reshape(len(test_pred),1)
         print((test_pred).shape, 'test_pred_labels')
 
         test_pred_labels = torch.cat((test_pred_labels, test_pred),1)
