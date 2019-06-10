@@ -159,10 +159,10 @@ for i in range(nnClassCount):
     svclassifier = SVC(kernel='linear') 
     svclassifier.fit(train_features,train_labels[:,i])
     test_pred = svclassifier.predict(test_features) 
-	if(test_pred_labels == None):
+    if(test_pred_labels == None):
 		test_pred_labels = test_pred
 	else:
-		test_pred_labels = torch.cat((test_pred_labels, test_pred),1)
+	   test_pred_labels = torch.cat((test_pred_labels, test_pred),1)
 
 outAUROC = []   
 #test_labels = test_labels.detach().cpu().clone().numpy()
