@@ -43,12 +43,13 @@ class CheXpertTrainer():
         patientsDict = defaultdict(list) 
         with torch.no_grad():
             for i, (input, target, patient, study, view) in enumerate(dataLoaderTest):
-                print(view)
                 dictKey = (patient[0], study[0])
                 patientsDict[dictKey].append((input, view, target))
+                if (i % 1000) == 0:
+                    print(i)
+            print("finished looping!")
             for patientStudy, infoList in patientsDict.items():
                 for patientInfo in infoList:
-                    print(infoList[2])
                     target = target.cuda()
                     outGT = torch.cat((outGT, target), 0).cuda()
 
