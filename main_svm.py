@@ -158,11 +158,7 @@ test_pred_labels = None
 for i in range(nnClassCount):
     svclassifier = SVC(kernel='linear') 
     svclassifier.fit(train_features,train_labels[:,i])
-    test_pred = svclassifier.predict(test_features)
-	#svclassifier.fit(train_features.detach().cpu().clone().numpy(),train_labels[:,i].detach().cpu().clone().numpy())
-	#test_pred = svclassifier.predict(test_features.detach().cpu().clone().numpy())
-	#print(confusion_matrix(y_test,y_pred))  
-	#print(classification_report(y_test,y_pred))  
+    test_pred = svclassifier.predict(test_features) 
 	if(test_pred_labels == None):
 		test_pred_labels = test_pred
 	else:
@@ -181,7 +177,10 @@ print(aurocMean, 'aurocMean')
 
 
 
-
+#svclassifier.fit(train_features.detach().cpu().clone().numpy(),train_labels[:,i].detach().cpu().clone().numpy())
+#test_pred = svclassifier.predict(test_features.detach().cpu().clone().numpy())
+#print(confusion_matrix(y_test,y_pred))  
+#print(classification_report(y_test,y_pred)) 
 
 
 
