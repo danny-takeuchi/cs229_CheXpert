@@ -12,6 +12,20 @@ use_gpu = torch.cuda.is_available()
 
 
 class CheXpertTrainer():
+
+    def computeAUROC (self, dataGT, dataPRED, classCount):
+        
+        outAUROC = []
+        
+        datanpGT = dataGT.cpu().numpy()
+        datanpPRED = dataPRED.cpu().numpy()
+        
+        for i in range(classCount):
+            try:
+                outAUROC.append(roc_auc_score(datanpGT[:, i], datanpPRED[:, i]))
+            except ValueError:
+                pass
+        return outAUROC
     
     def testMulti(self, modelPA, modelAP, modelLat, dataLoaderTest, nnClassCount, paCheckpoint, apCheckpoint, latCheckpoint, class_names):   
         
