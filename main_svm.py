@@ -193,10 +193,12 @@ for i in range(nnClassCount):
 
     except ValueError:
         pass
-aurocMean = np.array(outAUROC)
-aurocMean = np.array(outAUROC).mean()
+aurocMean1 = np.array(outAUROC)
+aurocMean2 = np.array(outAUROC).mean()
 
-print(aurocMean, 'aurocMean')
+print(aurocMean1, 'aurocMean')
+print(aurocMean2, 'aurocMean')
+
 
 
 
