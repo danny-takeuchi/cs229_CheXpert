@@ -84,7 +84,7 @@ dataset = CheXpertDataSet(pathFileTrain,transformSequence, policy=policy)
 
 
 #datasetTest, datasetTrain = random_split(dataset, [500, len(dataset) - 500])
-datasetTest, datasetTrain = random_split(dataset, [25, len(dataset) - 25])
+datasetTest, datasetTrain = random_split(dataset, [40, len(dataset) - 40])
 
 #datasetTest = torch.load("test.txt")
 
