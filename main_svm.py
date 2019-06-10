@@ -82,7 +82,7 @@ transformSequence=transforms.Compose(transformList)
 dataset = CheXpertDataSet(pathFileTrainFrontalAp,transformSequence, policy=policy)
 
 #datasetTest, datasetTrain = random_split(dataset, [500, len(dataset) - 500])
-datasetTest, datasetTrain = random_split(dataset, [10, len(dataset) - 10])
+datasetTest, datasetTrain = random_split(dataset, [500, len(dataset) - 500])
 
 #datasetTest = torch.load("test.txt")
 
@@ -156,7 +156,7 @@ print('got features')
 test_pred_labels = None
 
 for i in range(nnClassCount):
-    svclassifier = SVC(kernel='sigmoid') 
+    svclassifier = SVC(kernel='linear') 
     unique_labels = np.unique(train_labels[:,i])
     randindex = np.random.randint(low = 0,high= len(train_labels)-1)
     if(len(unique_labels) == 1):
