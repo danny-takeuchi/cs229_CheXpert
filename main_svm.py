@@ -165,7 +165,7 @@ for i in range(nnClassCount):
         else:
             train_labels[randindex,i] = 1
     svclassifier.fit(train_features,train_labels[:,i])
-    test_pred = svclassifier.predict(test_features) 
+    test_pred = torch.from_numpy(svclassifier.predict(test_features))
     if(i == 0):
         test_pred_labels = test_pred
     else:
