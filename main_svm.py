@@ -86,7 +86,7 @@ dataset = CheXpertDataSet(pathFileTrain,transformSequence, policy=policy)
 
 
 #datasetTest, datasetTrain = random_split(dataset, [500, len(dataset) - 500])
-datasetTest, datasetTrain = random_split(dataset, [1000, len(dataset) - 1000])
+datasetTest, datasetTrain = random_split(dataset, [10000, len(dataset) - 10000])
 
 #datasetTest = torch.load("test.txt")
 
@@ -148,17 +148,18 @@ for batchID, (varInput, target) in enumerate(dataLoaderTrain):
 test_features = None
 test_labels = None
 
-for batchID, (varInput, target) in enumerate(dataLoaderTest):        
-    varTarget = target.cuda(non_blocking = True)
-    if varInput.shape[0] != testBatchSize:
-        continue
-    varOutput = model(varInput)
-    if(batchID == 0):
-        test_labels = varTarget.detach().cpu().clone()
-        test_features = varOutput.detach().cpu().clone()
-    else:
-        test_labels = torch.cat((train_labels, varTarget.detach().cpu().clone()),0) 
-        test_features = torch.cat((train_features, varOutput.detach().cpu().clone()),0)
+for batchID, (varInput, target) in enumerate(dataLoaderTest):
+    if(batchID < 10):       
+        varTarget = target.cuda(non_blocking = True)
+        if varInput.shape[0] != testBatchSize:
+            continue
+        varOutput = model(varInput)
+        if(batchID == 0):
+            test_labels = varTarget.detach().cpu().clone()
+            test_features = varOutput.detach().cpu().clone()
+        else:
+            test_labels = torch.cat((train_labels, varTarget.detach().cpu().clone()),0) 
+            test_features = torch.cat((train_features, varOutput.detach().cpu().clone()),0)
 
 print('got features')
 test_pred_labels = None
