@@ -82,7 +82,7 @@ transformSequence=transforms.Compose(transformList)
 dataset = CheXpertDataSet(pathFileTrainFrontalAp,transformSequence, policy=policy)
 
 #datasetTest, datasetTrain = random_split(dataset, [500, len(dataset) - 500])
-datasetTest, datasetTrain = random_split(dataset, [50, len(dataset) - 500])
+datasetTest, datasetTrain = random_split(dataset, [500, len(dataset) - 500])
 
 #datasetTest = torch.load("test.txt")
 
