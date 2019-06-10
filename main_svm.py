@@ -166,7 +166,7 @@ for i in range(nnClassCount):
             train_labels[randindex,i] = 1
     svclassifier.fit(train_features,train_labels[:,i])
     test_pred = svclassifier.predict(test_features) 
-    if(test_pred_labels == None):
+    if(i == 0):
         test_pred_labels = test_pred
     else:
        test_pred_labels = torch.cat((test_pred_labels, test_pred),1)
