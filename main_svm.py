@@ -84,7 +84,7 @@ dataset = CheXpertDataSet(pathFileTrain,transformSequence, policy=policy)
 
 
 #datasetTest, datasetTrain = random_split(dataset, [500, len(dataset) - 500])
-datasetTest, datasetTrain = random_split(dataset, [30, len(dataset) - 30])
+datasetTest, datasetTrain = random_split(dataset, [35, len(dataset) - 35])
 
 #datasetTest = torch.load("test.txt")
 
@@ -194,6 +194,8 @@ for i in range(nnClassCount):
     except ValueError:
         pass
 aurocMean = np.array(outAUROC)
+aurocMean = np.array(outAUROC).mean()
+
 print(aurocMean, 'aurocMean')
 
 
