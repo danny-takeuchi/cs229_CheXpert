@@ -5,6 +5,7 @@ import time
 import torch.backends.cudnn as cudnn
 import numpy as np
 from sklearn.metrics.ranking import roc_auc_score
+from collections import defaultdict
 #from main import dataLoaderTest, dataLoaderTrain, dataLoaderVal, trMaxEpoch, nnClassCount
 
 use_gpu = torch.cuda.is_available()
