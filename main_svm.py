@@ -84,7 +84,7 @@ dataset = CheXpertDataSet(pathFileTrain,transformSequence, policy=policy)
 
 
 #datasetTest, datasetTrain = random_split(dataset, [500, len(dataset) - 500])
-datasetTest, datasetTrain = random_split(dataset, [50, len(dataset) - 50])
+datasetTest, datasetTrain = random_split(dataset, [25, len(dataset) - 25])
 
 #datasetTest = torch.load("test.txt")
 
@@ -189,7 +189,6 @@ outAUROC = []
 #test_pred_labels = test_pred_labels.detach().cpu().clone().numpy()
 for i in range(nnClassCount):
     try:
-        outAUROC.append(roc_auc_score(test_labels[:, i], test_pred_labels[:, i]))
         outAUROC.append(roc_auc_score(test_labels[:, i], test_pred_labels[:, i]))
 
     except ValueError:
