@@ -171,7 +171,9 @@ for i in range(nnClassCount):
         test_pred_labels = test_pred
         print(type(test_pred_labels), 'test_pred_labels')
     else:
-        print(type(test_pred_labels), '2')
+        print((test_pred_labels).shape, 'test_pred_labels')
+        print((test_pred).shape, 'test_pred_labels')
+
         test_pred_labels = torch.cat((test_pred_labels, test_pred),1)
 
 outAUROC = []   
