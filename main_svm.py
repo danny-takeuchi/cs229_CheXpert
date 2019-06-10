@@ -78,8 +78,8 @@ transformList.append(normalize)
 transformSequence=transforms.Compose(transformList)
 
 #LOAD DATASET
-dataset = CheXpertDataSet(pathFileTrain ,transformSequence, policy=policy)
-#dataset = CheXpertDataSet(pathFileTrainFrontalPa,transformSequence, policy=policy)
+#dataset = CheXpertDataSet(pathFileTrain ,transformSequence, policy=policy)
+dataset = CheXpertDataSet(pathFileTrainFrontalAp,transformSequence, policy=policy)
 
 datasetTest, datasetTrain = random_split(dataset, [500, len(dataset) - 500])
 #datasetTest = torch.load("test.txt")
@@ -139,7 +139,7 @@ test_pred_labels = None
 
 for i in range(nnClassCount):
 	svclassifier = SVC(kernel='linear') 
-	svclassifier.fit(features,train_labels[:,i])
+	svclassifier.fit(train_features,train_labels[:,i])
 	test_pred = svclassifier.predict(test_features)
 	#print(confusion_matrix(y_test,y_pred))  
 	#print(classification_report(y_test,y_pred))  
