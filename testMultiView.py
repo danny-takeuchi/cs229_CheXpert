@@ -69,17 +69,20 @@ class CheXpertTrainer():
                 predictionsForPatientStudy = []
                 for patientInfo in infoList:
                     input = patientInfo[0]
-                    viewType = patientInfo[1]
+                    viewType = patientInfo[1][0]
                     target = patientInfo[2]
                     target = target.cuda()
                     outGT = torch.cat((outGT, target), 0).cuda()
                     bs, c, h, w = input.size()
                     varInput = input.view(-1, c, h, w)
                     if viewType == 'FrontalAP':
+                        print("front")
                         out = modelAP(varInput)
                     elif viewType == 'FrontalPA':
+                        print("back")
                         out = modelPA(varInput)
                     else:
+                        print("lat")
                         out = modelLat(varInput)
                     predictionsForPatientStudy.append(out)
                 for prediction in predictionsForPatientStudy:
