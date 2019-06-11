@@ -174,7 +174,7 @@ for i in range(nnClassCount):
             train_labels[randindex,i] = 0
         else:
             train_labels[randindex,i] = 1
-    clf_gini = DecisionTreeClassifier(criterion = "gini", random_state = 100, max_depth=3, min_samples_leaf=5)
+    clf_gini = DecisionTreeClassifier(criterion = "entropy", random_state = 100, max_depth=32, min_samples_leaf=5)
     clf_gini.fit(train_features, train_labels[:,i])
     test_pred = torch.from_numpy(clf_gini.predict(test_features))
     print(type(test_pred), 'test_pred')
