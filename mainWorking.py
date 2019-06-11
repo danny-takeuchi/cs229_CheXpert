@@ -140,20 +140,20 @@ if action == "train":
 
 # ## Test and ROC Curves
 
-modelPA = mod.getmodel(modelName,nnClassCount)
-modelPA = torch.nn.DataParallel(modelPA).cuda()
+model = mod.getmodel(modelName,nnClassCount)
+model = torch.nn.DataParallel(model).cuda()
 
-modelAP = mod.getmodel(modelName,nnClassCount)
-modelAP = torch.nn.DataParallel(modelAP).cuda()
+#modelAP = mod.getmodel(modelName,nnClassCount)
+#modelAP = torch.nn.DataParallel(modelAP).cuda()
 
-modelLat = mod.getmodel(modelName,nnClassCount)
-modelLat = torch.nn.DataParallel(modelLat).cuda()
+#modelLat = mod.getmodel(modelName,nnClassCount)
+#modelLat = torch.nn.DataParallel(modelLat).cuda()
 
 class_names = ['No Finding', 'Enlarged Cardiomediastinum', 'Cardiomegaly', 'Lung Opacity', 
                'Lung Lesion', 'Edema', 'Consolidation', 'Pneumonia', 'Atelectasis', 'Pneumothorax', 
                'Pleural Effusion', 'Pleural Other', 'Fracture', 'Support Devices']
 
-outGT1, outPRED1 = CheXpertTrainer.testMulti(CheXpertTrainer, modelPA, modelAP, modelLat, dataLoaderTest, nnClassCount, paCheckpoint, apCheckpoint, latCheckpoint, class_names)
+outGT1, outPRED1 = CheXpertTrainer.testMulti(CheXpertTrainer, model, model, model, dataLoaderTest, nnClassCount, paCheckpoint, apCheckpoint, latCheckpoint, class_names)
 # outGT3, outPRED3 = CheXpertTrainer.test(CheXpertTrainer, model, dataLoaderTest, nnClassCount, zerosModeltoTest, class_names)
 #outGT4, outPRED4 = CheXpertTrainer.test(model, dataLoaderTest, nnClassCount, "model4.pth.tar", class_names)
 
