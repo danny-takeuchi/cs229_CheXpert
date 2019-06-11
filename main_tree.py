@@ -31,7 +31,9 @@ import numpy as np
 from sklearn.metrics.ranking import roc_auc_score
 from sklearn.svm import SVC  
 from sklearn.metrics import classification_report, confusion_matrix  
-
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.metrics import accuracy_score
+from sklearn import tree
 
 # Paths to the files with training, and validation sets.
 # Each file contains pairs (path to image, output vector)
