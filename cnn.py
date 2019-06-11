@@ -143,27 +143,28 @@ for epoch in range(1):  # loop over the dataset multiple times
 
     running_loss = 0.0
     for i, data in enumerate(trainloader, 0):
-        # get the inputs; data is a list of [inputs, labels]
-        inputs, labels = data
-        if inputs.shape[0] != trBatchSize:
-               continue
-        # zero the parameter gradients
-        optimizer.zero_grad()
+        if(i < 5):
+            # get the inputs; data is a list of [inputs, labels]
+            inputs, labels = data
+            if inputs.shape[0] != trBatchSize:
+                   continue
+            # zero the parameter gradients
+            optimizer.zero_grad()
 
-        # forward + backward + optimize
-        outputs = net(inputs)
-        labels = labels.cuda()
-        loss = criterion(outputs, labels)
-        loss.backward()
-        optimizer.step()
+            # forward + backward + optimize
+            outputs = net(inputs)
+            labels = labels.cuda()
+            loss = criterion(outputs, labels)
+            loss.backward()
+            optimizer.step()
 
-        # print statistics
-        running_loss += loss.item()
-        print(i, loss.item())
-        if i % 2000 == 1999:    # print every 2000 mini-batches
-            print('[%d, %5d] loss: %.3f' %
-                  (epoch + 1, i + 1, running_loss / 2000))
-            running_loss = 0.0
+            # print statistics
+            running_loss += loss.item()
+            print(i, loss.item())
+            if i % 2000 == 1999:    # print every 2000 mini-batches
+                print('[%d, %5d] loss: %.3f' %
+                      (epoch + 1, i + 1, running_loss / 2000))
+                running_loss = 0.0
 
 print('Finished Training')
 
@@ -180,4 +181,89 @@ with torch.no_grad():
 
 print('Accuracy of the network on the test images: %d %%' % (
     100 * correct / total))
+
+class CheXpertTrainer():
+
+    def computeAUROC (self, dataGT, dataPRED, classCount):
+        
+        outAUROC = []
+        
+        datanpGT = dataGT.cpu().numpy()
+        datanpPRED = dataPRED.cpu().numpy()
+        
+        for i in range(classCount):
+            try:
+                outAUROC.append(roc_auc_score(datanpGT[:, i], datanpPRED[:, i]))
+            except ValueError:
+                pass
+        return outAUROC
+    
+    def testMulti(self, modelPA, modelAP, modelLat, dataLoaderTest, nnClassCount, paCheckpoint, apCheckpoint, latCheckpoint, class_names):   
+        
+        cudnn.benchmark = True
+        print("In testMulti")
+        
+        if paCheckpoint != None and use_gpu:
+            modelPACheckpoint = torch.load(paCheckpoint)
+            modelAPCheckpoint = torch.load(apCheckpoint)
+            modelLatCheckpoint = torch.load(latCheckpoint)
+            # model.load_state_dict(modelCheckpoint)
+
+            modelPA.load_state_dict(modelPACheckpoint['state_dict'], strict=False)
+            modelAP.load_state_dict(modelAPCheckpoint['state_dict'], strict=False)
+            modelLat.load_state_dict(modelLatCheckpoint['state_dict'], strict=False)
+
+        if use_gpu:
+            outGT = torch.FloatTensor().cuda()
+            outPRED = torch.FloatTensor().cuda()
+        else:
+            outGT = torch.FloatTensor()
+            outPRED = torch.FloatTensor()
+       
+        modelPA.eval()
+        modelAP.eval()
+        modelLat.eval()
+        print("about to loop")
+        patientsDict = defaultdict(list) 
+        with torch.no_grad():
+            for i, (input, target, patient, study, view) in enumerate(dataLoaderTest):
+                dictKey = (patient[0], study[0])
+                patientsDict[dictKey].append((input, view, target))
+                if (i % 1000) == 0:
+                    print(i)
+            print("finished looping!")
+            patientCounter = 0
+            for patientStudy, infoList in patientsDict.items():
+                patientCounter += 1
+                predictionsForPatientStudy = []
+                for patientInfo in infoList:
+                    inputVal = patientInfo[0]
+                    #viewType = patientInfo[1][0]
+                    viewType = net(inputVal)
+                    target = patientInfo[2]
+                    target = target.cuda()
+                    outGT = torch.cat((outGT, target), 0).cuda()
+                    bs, c, h, w = inputVal.size()
+                    varInput = inputVal.view(-1, c, h, w)
+                    if viewType == 0:
+                        out = modelPA(varInput)
+                    elif viewType == 1:
+                        out = modelLat(varInput)
+                    else:
+                        out = modelAP(varInput)
+                    predictionsForPatientStudy.append(out)
+                for prediction in predictionsForPatientStudy:
+                    newPrediction = torch.mean(torch.stack(predictionsForPatientStudy), dim=0)
+                    outPRED = torch.cat((outPRED, newPrediction), 0) 
+                if (patientCounter % 100) == 0:
+                    print(patientCounter)
+        aurocIndividual = CheXpertTrainer.computeAUROC(self, outGT, outPRED, nnClassCount)
+        aurocMean = np.array(aurocIndividual).mean()
+        
+        print ('AUROC mean ', aurocMean)
+        
+        for i in range (0, len(aurocIndividual)):
+            print (class_names[i], ' ', aurocIndividual[i])
+        
+        return outGT, outPRED
 
