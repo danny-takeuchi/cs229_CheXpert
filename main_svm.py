@@ -84,7 +84,7 @@ dataset = CheXpertDataSet(pathFileTrain,transformSequence, policy=policy)
 
 
 #datasetTest, datasetTrain = random_split(dataset, [500, len(dataset) - 500])
-datasetTest, datasetTrain = random_split(dataset, [35, len(dataset) - 35])
+datasetTest, datasetTrain = random_split(dataset, [40, len(dataset) - 40])
 
 #datasetTest = torch.load("test.txt")
 
@@ -143,6 +143,7 @@ for batchID, (varInput, target) in enumerate(dataLoaderTrain):
 #batch by num_features 
 #batch by nnClassCount 
 
+
 test_features = None
 test_labels = None
 
@@ -193,13 +194,42 @@ for i in range(nnClassCount):
 
     except ValueError:
         pass
-aurocMean1 = np.array(outAUROC)
-aurocMean2 = np.array(outAUROC).mean()
+aurocMean = np.array(outAUROC)
+print(aurocMean, 'aurocMean')
 
-print(aurocMean1, 'aurocMean')
-print(aurocMean2, 'aurocMean')
+def make_meshgrid(x, y, h=.02):
+    x_min, x_max = x.min() - 1, x.max() + 1
+    y_min, y_max = y.min() - 1, y.max() + 1
+    xx, yy = np.meshgrid(np.arange(x_min, x_max, h), np.arange(y_min, y_max, h))
+    return xx, yy
 
+def plot_contours(ax, clf, xx, yy, **params):
+    Z = clf.predict(np.c_[xx.ravel(), yy.ravel()])
+    Z = Z.reshape(xx.shape)
+    out = ax.contourf(xx, yy, Z, **params)
+    return out
 
+model = svm.SVC(kernel='linear')
+model.fit(train_features,train_labels[:,0])
+X = train_features
+y = train_labels[:,0]
+
+fig, ax = plt.subplots()
+# title for the plots
+title = ('Decision surface of linear SVC ')
+# Set-up grid for plotting.
+X0, X1 = X[:, 0], X[:, 1]
+xx, yy = make_meshgrid(X0, X1)
+
+plot_contours(ax, clf, xx, yy, cmap=plt.cm.coolwarm, alpha=0.8)
+ax.scatter(X0, X1, c=y, cmap=plt.cm.coolwarm, s=20, edgecolors='k')
+ax.set_ylabel('y label here')
+ax.set_xlabel('x label here')
+ax.set_xticks(())
+ax.set_yticks(())
+ax.set_title(title)
+ax.legend()
+plt.show()
 
 
 #svclassifier.fit(train_features.detach().cpu().clone().numpy(),train_labels[:,i].detach().cpu().clone().numpy())
