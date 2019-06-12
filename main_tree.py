@@ -6,6 +6,7 @@ import sys
 import cv2
 import time
 import matplotlib.pyplot as plt
+plt.switch_backend('agg')
 import torch
 import torch.nn.functional as tfunc
 import torchvision.transforms as transforms
