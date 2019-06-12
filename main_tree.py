@@ -50,7 +50,7 @@ nnClassCount = 14                   #dimension of the output
 
 # Training settings: batch size, maximum number of epochs
 # ["DenseNet121","Vgg16","Vgg19"]
-modelName = "Vgg19"
+modelName = "DenseNet121"
 policy = "ones"
 trBatchSize = 10
 testBatchSize = 5
@@ -86,8 +86,8 @@ dataset = CheXpertDataSet(pathFileTrain,transformSequence, policy=policy)
 
 
 
-#datasetTest, datasetTrain = random_split(dataset, [500, len(dataset) - 500])
-datasetTest, datasetTrain = random_split(dataset, [5000, len(dataset) - 5000])
+datasetTest, datasetTrain = random_split(dataset, [500, len(dataset) - 500])
+#datasetTest, datasetTrain = random_split(dataset, [5000, len(dataset) - 5000])
 
 #datasetTest = torch.load("test.txt")
 
@@ -203,7 +203,30 @@ print(aurocMean, 'aurocMean')
 aurocMean1 = np.array(outAUROC)
 print(aurocMean1, 'aurocMean')
 
+for i in range(nnClassCount):
+    fpr, tpr, threshold = metrics.roc_curve(test_labels.cpu()[:,i], test_pred_labels.cpu()[:,i])
+    roc_auc = metrics.auc(fpr, tpr)
+    #f = plt.subplot(2, 7, i+1)
+    # fpr2, tpr2, threshold2 = metrics.roc_curve(outGT3.cpu()[:,i], outPRED3.cpu()[:,i])
+    # roc_auc2 = metrics.auc(fpr2, tpr2)
+    #fpr3, tpr3, threshold2 = metrics.roc_curve(outGT4.cpu()[:,i], outPRED4.cpu()[:,i])
+    #roc_auc3 = metrics.auc(fpr3, tpr3)
 
+
+    plt.title('ROC for: '+ modelName + "-" + class_names[i])
+    print("ROC for: "+ modelName + "-" + class_names[i] + " ones- %0.2f" % roc_auc)
+    # print("ROC for: "+ modelName + "-" + class_names[i] + " zeros- %0.2f" % roc_auc2)
+    plt.plot(fpr, tpr, label = 'U-ones: AUC = %0.2f' % roc_auc)
+    # plt.plot(fpr2, tpr2, label = 'U-zeros: AUC = %0.2f' % roc_auc2)
+    #plt.plot(fpr3, tpr3, label = 'AUC = %0.2f' % roc_auc3)
+
+    plt.legend(loc = 'lower right')
+    #plt.plot([0, 1], [0, 1],'r--')
+    #plt.xlim([0, 1])
+    #plt.ylim([0, 1])
+    plt.ylabel('True Positive Rate')
+    plt.xlabel('False Positive Rate')
+    plt.savefig('ROC_'+modelName + "_" + class_names[i]+".png")
 
 
 
