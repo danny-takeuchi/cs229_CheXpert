@@ -96,7 +96,7 @@ train_features = None
 train_labels = None
 
 for batchID, (varInput, target) in enumerate(dataLoaderTrain):      
-    features = model.extract_features(varInput)
+    features = model(varInput)
     print(features.shape) # torch.Size([1, 1024, 7, 7])
 
 # for batchID, (varInput, target) in enumerate(dataLoaderTrain):        
