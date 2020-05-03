@@ -94,81 +94,86 @@ model.eval()
 train_features = None
 train_labels = None
 
-for batchID, (varInput, target) in enumerate(dataLoaderTrain):        
-    varTarget = target.cuda(non_blocking = True)
-    if varInput.shape[0] != trBatchSize:
-        continue
-    varOutput = model(varInput)
-    if(batchID == 0):
-        train_labels = varTarget.detach().cpu().clone()
-        train_features = varOutput.detach().cpu().clone()
-    else:
-        train_labels = torch.cat((train_labels, varTarget.detach().cpu().clone()),0) 
-        train_features = torch.cat((train_features, varOutput.detach().cpu().clone()),0)
+for batchID, (varInput, target) in enumerate(dataLoaderTrain):      
+    features = model.extract_features(varInput)
+    print(features.shape) # torch.Size([1, 1024, 7, 7])
 
-test_features = None
-test_labels = None
+# for batchID, (varInput, target) in enumerate(dataLoaderTrain):        
+#     varTarget = target.cuda(non_blocking = True)
+#     if varInput.shape[0] != trBatchSize:
+#         continue
+#     varOutput = model(varInput)
+#     if(batchID == 0):
+#         train_labels = varTarget.detach().cpu().clone()
+#         train_features = varOutput.detach().cpu().clone()
+#     else:
+#         train_labels = torch.cat((train_labels, varTarget.detach().cpu().clone()),0) 
+#         train_features = torch.cat((train_features, varOutput.detach().cpu().clone()),0)
 
-for batchID, (varInput, target) in enumerate(dataLoaderTest):
-        varTarget = target.cuda(non_blocking = True)
-        if varInput.shape[0] != testBatchSize:
-            continue
-        varOutput = model(varInput)
-        if(batchID == 0):
-            test_labels = varTarget.detach().cpu().clone()
-            test_features = varOutput.detach().cpu().clone()
-        else:
-            test_labels = torch.cat((train_labels, varTarget.detach().cpu().clone()),0) 
-            test_features = torch.cat((train_features, varOutput.detach().cpu().clone()),0)
-test_pred_labels = None
+        
+# test_features = None
+# test_labels = None
 
-for i in range(nnClassCount):
-    unique_labels = np.unique(train_labels[:,i])
-    randindex = np.random.randint(low = 0,high= len(train_labels)-1)
-    if(len(unique_labels) == 1):
-        if(1 in unique_labels):
-            train_labels[randindex,i] = 0
-        else:
-            train_labels[randindex,i] = 1
-    clf_gini = DecisionTreeClassifier(criterion = "entropy", random_state = 100, max_depth=32, min_samples_leaf=5)
-    clf_gini.fit(train_features, train_labels[:,i])
-    test_pred = torch.from_numpy(clf_gini.predict(test_features))
-    if(i == 0):
-        test_pred_labels = test_pred
-        test_pred_labels = test_pred_labels.reshape(len(test_pred_labels),1)
-        print("Class 1 completed")
-    else:
-        test_pred = test_pred.reshape(len(test_pred),1)
-        test_pred_labels = torch.cat((test_pred_labels, test_pred),1)
-        print("Class " + i + " completed") 
+# for batchID, (varInput, target) in enumerate(dataLoaderTest):
+#         varTarget = target.cuda(non_blocking = True)
+#         if varInput.shape[0] != testBatchSize:
+#             continue
+#         varOutput = model(varInput)
+#         if(batchID == 0):
+#             test_labels = varTarget.detach().cpu().clone()
+#             test_features = varOutput.detach().cpu().clone()
+#         else:
+#             test_labels = torch.cat((train_labels, varTarget.detach().cpu().clone()),0) 
+#             test_features = torch.cat((train_features, varOutput.detach().cpu().clone()),0)
+# test_pred_labels = None
 
-outAUROC = []   
-for i in range(nnClassCount):
-    try:
-        outAUROC.append(roc_auc_score(test_labels[:, i], test_pred_labels[:, i]))
+# for i in range(nnClassCount):
+#     unique_labels = np.unique(train_labels[:,i])
+#     randindex = np.random.randint(low = 0,high= len(train_labels)-1)
+#     if(len(unique_labels) == 1):
+#         if(1 in unique_labels):
+#             train_labels[randindex,i] = 0
+#         else:
+#             train_labels[randindex,i] = 1
+#     clf_gini = DecisionTreeClassifier(criterion = "entropy", random_state = 100, max_depth=32, min_samples_leaf=5)
+#     clf_gini.fit(train_features, train_labels[:,i])
+#     test_pred = torch.from_numpy(clf_gini.predict(test_features))
+#     if(i == 0):
+#         test_pred_labels = test_pred
+#         test_pred_labels = test_pred_labels.reshape(len(test_pred_labels),1)
+#         print("Class 1 completed")
+#     else:
+#         test_pred = test_pred.reshape(len(test_pred),1)
+#         test_pred_labels = torch.cat((test_pred_labels, test_pred),1)
+#         print("Class " + i + " completed") 
 
-    except ValueError:
-        pass
-aurocMean = np.array(outAUROC).mean()
-aurocValues = np.array(outAUROC)
-print(aurocMean, 'aurocMean')
-print(aurocValues, 'aurocValues')
+# outAUROC = []   
+# for i in range(nnClassCount):
+#     try:
+#         outAUROC.append(roc_auc_score(test_labels[:, i], test_pred_labels[:, i]))
+
+#     except ValueError:
+#         pass
+# aurocMean = np.array(outAUROC).mean()
+# aurocValues = np.array(outAUROC)
+# print(aurocMean, 'aurocMean')
+# print(aurocValues, 'aurocValues')
 
 
 
-#print ROC curve
-for i in range(nnClassCount):
-    fpr, tpr, threshold = metrics.roc_curve(test_labels.cpu()[:,i], test_pred_labels.cpu()[:,i])
-    roc_auc = metrics.auc(fpr, tpr)
+# #print ROC curve
+# for i in range(nnClassCount):
+#     fpr, tpr, threshold = metrics.roc_curve(test_labels.cpu()[:,i], test_pred_labels.cpu()[:,i])
+#     roc_auc = metrics.auc(fpr, tpr)
     
-    plt.title('ROC for: '+ modelName + "-" + class_names[i])
-    print("ROC for: "+ modelName + "-" + class_names[i] + " ones- %0.2f" % roc_auc)
-    plt.plot(fpr, tpr, label = 'U-ones: AUC = %0.2f' % roc_auc)
+#     plt.title('ROC for: '+ modelName + "-" + class_names[i])
+#     print("ROC for: "+ modelName + "-" + class_names[i] + " ones- %0.2f" % roc_auc)
+#     plt.plot(fpr, tpr, label = 'U-ones: AUC = %0.2f' % roc_auc)
 
-    plt.legend(loc = 'lower right')
-    plt.ylabel('True Positive Rate')
-    plt.xlabel('False Positive Rate')
-    plt.savefig('ROC_'+modelName + "_" + class_names[i]+".png")
+#     plt.legend(loc = 'lower right')
+#     plt.ylabel('True Positive Rate')
+#     plt.xlabel('False Positive Rate')
+#     plt.savefig('ROC_'+modelName + "_" + class_names[i]+".png")
 
 
 
