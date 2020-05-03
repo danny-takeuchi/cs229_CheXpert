@@ -40,6 +40,7 @@ modelName = "DenseNet121"
 policy = "ones"
 trBatchSize = 10
 testBatchSize = 5
+nnClassCount = 14
 
 # Parameters related to image transforms: size of the down-scaled image, cropped image
 imgtransResize = (320, 320)
