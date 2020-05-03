@@ -50,6 +50,7 @@ class CheXpertDataSet(Dataset):
         """Take the index of item and returns the image and its labels"""
         
         image_name = self.image_names[index]
+        image_name = '/deep/group/CheXpert/' + image_name
         image = Image.open(image_name).convert('RGB')
         label = self.labels[index]
         if self.transform is not None:
