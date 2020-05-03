@@ -33,8 +33,8 @@ from sklearn import tree
 
 # Paths to the files with training, and validation sets.
 # Each file contains pairs (path to image, output vector)
-pathFileTrain = 'CheXpert-v1.0-small/train.csv'
-pathFileValid = 'CheXpert-v1.0-small/valid.csv'
+pathFileTrain = '/deep/group/CheXpert/CheXpert-v1.0-small/train.csv'
+pathFileValid = '/deep/group/CheXpert/CheXpert-v1.0-small/valid.csv'
 
 modelName = "DenseNet121"
 policy = "ones"
