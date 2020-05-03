@@ -77,7 +77,7 @@ class DenseNet121(nn.Module):
     """
     def __init__(self, out_size):
         super(DenseNet121, self).__init__()
-        self.densenet121 = torchvision.models.densenet121(pretrained=False)
+        self.densenet121 = torchvision.models.densenet121(pretrained=True)
         self.densenet121.classifier = nn.Sequential()
         #num_ftrs = self.densenet121.classifier.in_features
         #self.densenet121.classifier = nn.Sequential(
@@ -97,7 +97,7 @@ train_labels = None
 
 for batchID, (varInput, target) in enumerate(dataLoaderTrain):      
     features = model(varInput)
-    print(features.shape) # torch.Size([1, 1024, 7, 7])
+    print(features) # torch.Size([1, 1024, 7, 7])
 
 # for batchID, (varInput, target) in enumerate(dataLoaderTrain):        
 #     varTarget = target.cuda(non_blocking = True)
