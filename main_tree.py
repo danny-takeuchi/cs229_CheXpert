@@ -132,10 +132,10 @@ probs = probs[:,1:]
 
 print(probs.shape)
 
-clf_gini = DecisionTreeClassifier(criterion = "entropy", random_state = 100, max_depth=32, min_samples_leaf=5)
-clf_gini.fit(probs[100:,], labels[100:])
-test_pred = torch.from_numpy(clf_gini.predict(probs[:100,:]))
-score = roc_auc_score(labels[:100], test_pred)
+clf_gini = DecisionTreeClassifier(criterion = "gini", random_state = 100, max_depth=32, min_samples_leaf=5)
+clf_gini.fit(probs[:200,], labels[:200])
+test_pred = torch.from_numpy(clf_gini.predict(probs[200:,:]))
+score = roc_auc_score(labels[200:], test_pred)
 print(score)
 
 
